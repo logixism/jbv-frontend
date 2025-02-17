@@ -1,6 +1,12 @@
 "use client";
 
 import {
+  AccordionContent,
+  Accordion,
+  AccordionTrigger,
+  AccordionItem,
+} from "@/components/ui/accordion";
+import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -16,6 +22,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { useTheme } from "next-themes";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Line, LineChart } from "recharts";
 
@@ -46,16 +54,14 @@ const fallbackChartData = [
 const chartConfig = {
   value: {
     label: "Value",
-    color: "#E4E4E7",
   },
 } satisfies ChartConfig;
 
 export default function Home() {
-  const [torpedoData, setTorpedoData] = useState<TorpedoData>();
-  const [chartData, setChartData] = useState<ChartData>();
-
   const [unofficialWarningOpen, setUnofficialWarningOpen] = useState(true);
 
+  const [torpedoData, setTorpedoData] = useState<TorpedoData>();
+  const [chartData, setChartData] = useState<ChartData>();
   useEffect(() => {
     async function fetchData() {
       const data = (await getTorpedoData()) as TorpedoData;
@@ -108,20 +114,29 @@ export default function Home() {
         </AlertDialogContent>
       </AlertDialog>
 
-      <div className="max-w-130">
-        <h1 className="text-zinc-50 font-bold text-4xl">JBValues</h1>
-        <p>
-          We are a ROBLOX Jailbreak trading website with a variety of features
-          made to assist you in trading. These include a value list, a value
-          calculator, a dupe list, and much more!
-        </p>
+      <div className="flex max-w-150">
+        {/* <Image
+          src="/trade_island.png"
+          width={300}
+          height={300}
+          alt="trade island image"
+        /> */}
+        <div className="ml-4">
+          <h1 className="font-bold text-4xl">JBValues</h1>
+          <p>
+            We are a ROBLOX Jailbreak trading website with a variety of features
+            made to assist you in trading. These include a value list, a value
+            calculator, a dupe list, and much more!
+          </p>
+        </div>
       </div>
       <div className="flex flex-col text-center mt-12 w-full">
-        <h2 className="font-semibold text-3xl">We provide</h2>
+        <h2 className="font-semibold text-3xl ">We provide</h2>
+        <p>Some tools and metrics for you to use</p>
         <div className="flex mt-12 md:flex-row flex-col md:justify-between items-center">
           <div className="outline-1 p-4 text-left outline-zinc-800 rounded-lg w-100 h-60 max-h-60">
-            <h4 className="text-sm text-zinc-50">Values</h4>
-            <h2 className="font-bold text-zinc-50">Torpedo value over time</h2>
+            <h4 className="text-sm">Values</h4>
+            <h2 className="font-bold">Torpedo value over time</h2>
             <ChartContainer config={chartConfig} className="pt-8 h-40 w-full">
               <LineChart
                 accessibilityLayer
@@ -130,7 +145,7 @@ export default function Home() {
                 <Line
                   dataKey="value"
                   type="natural"
-                  stroke="var(--color-value)"
+                  stroke="var(--chart-1)"
                   strokeWidth={2}
                   dot={false}
                 />
@@ -142,28 +157,28 @@ export default function Home() {
             </ChartContainer>
           </div>
           <div className="outline-1 p-4 text-left outline-zinc-800 rounded-lg w-100 h-60 max-h-60">
-            <h4 className="text-sm text-zinc-50">Calculator</h4>
-            <h2 className="font-bold text-zinc-50">Least rich JBValues user</h2>
+            <h4 className="text-sm ">Calculator</h4>
+            <h2 className="font-bold">Least rich JBValues user</h2>
             <div>
               <div className="flex flex-row mt-4 justify-between">
-                <p className="font-semibold text-zinc-50">Torpedo x3</p>
-                <p className="font-bold text-zinc-200">
+                <p className="font-semibold">Torpedo x3</p>
+                <p className="font-bold dark:text-zinc-200">
                   {torpedoData?.value
                     ? `$ ${(torpedoData?.value * 3).toLocaleString()}`
                     : "loading..."}
                 </p>
               </div>
               <div className="flex flex-row mt-2 justify-between">
-                <p className="font-semibold text-zinc-50">Torpedo x5</p>
-                <p className="font-bold text-zinc-200">
+                <p className="font-semibold">Torpedo x5</p>
+                <p className="font-bold dark:text-zinc-200">
                   {torpedoData?.value
                     ? `$ ${(torpedoData?.value * 5).toLocaleString()}`
                     : "loading..."}
                 </p>
               </div>
               <div className="flex flex-row mt-2 justify-between">
-                <p className="font-semibold text-zinc-50">Torpedo x10</p>
-                <p className="font-bold text-zinc-200">
+                <p className="font-semibold">Torpedo x10</p>
+                <p className="font-bold dark:text-zinc-200">
                   {torpedoData?.value
                     ? `$ ${(torpedoData?.value * 10).toLocaleString()}`
                     : "loading..."}
@@ -171,8 +186,8 @@ export default function Home() {
               </div>
               <div className="border-t border-zinc-800 my-4" />
               <div className="flex flex-row justify-between">
-                <p className="font-semibold text-zinc-50">Total</p>
-                <p className="font-bold text-zinc-200">
+                <p className="font-semibold">Total</p>
+                <p className="font-bold dark:text-zinc-200">
                   {torpedoData?.value
                     ? `$ ${(torpedoData?.value * 18).toLocaleString()}`
                     : "loading..."}
@@ -181,33 +196,101 @@ export default function Home() {
             </div>
           </div>{" "}
           <div className="outline-1 p-4 text-left outline-zinc-800 rounded-lg w-100 h-60 max-h-60">
-            <h4 className="text-sm text-zinc-50">Dupe list</h4>
-            <h2 className="font-bold text-zinc-50">Is that item a dupe..?</h2>
+            <h4 className="text-sm">Dupe list</h4>
+            <h2 className="font-bold">Is that item a dupe..?</h2>
             <div>
               <div className="flex flex-row mt-4 justify-between">
-                <p className="font-semibold text-zinc-50">logixism&apos;s P1</p>
-                <p className="font-bold text-red-400">Duped</p>
+                <p className="font-semibold">logixism&apos;s P1</p>
+                <p className="font-bold dark:text-red-400 text-red-500">
+                  Duped
+                </p>
               </div>
               <div className="flex flex-row mt-4 justify-between">
-                <p className="font-semibold text-zinc-50">
-                  deimp12&apos;s Pickup
+                <p className="font-semibold">deimp12&apos;s Pickup</p>
+                <p className="font-bold dark:text-red-400 text-red-500">
+                  Duped
                 </p>
-                <p className="font-bold text-red-400">Duped</p>
               </div>
               <div className="flex flex-row mt-4 justify-between">
-                <p className="font-semibold text-zinc-50">
-                  cancle5&apos;s Parision
+                <p className="font-semibold">cancle5&apos;s Parisian</p>
+                <p className="font-bold dark:text-red-400 text-red-500">
+                  Duped
                 </p>
-                <p className="font-bold text-red-400">Duped</p>
               </div>
               <div className="flex flex-row mt-4 justify-between">
-                <p className="font-semibold text-zinc-50">
-                  zain&apos;s Administrator
+                <p className="font-semibold">zain&apos;s Administrator</p>
+                <p className="font-bold dark:text-green-300 text-green-500">
+                  Not duped
                 </p>
-                <p className="font-bold text-green-300">Not duped</p>
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col text-center mt-12 w-full">
+        <h2 className="font-semibold text-3xl">Quick FAQ</h2>
+        <p>Find out about our mission</p>
+
+        <div className="text-left">
+          <Accordion type="single">
+            <AccordionItem value="item-1">
+              <AccordionTrigger>How do we determine values?</AccordionTrigger>
+              <AccordionContent>
+                Our values are determined by averaging inputs from some of the
+                most experienced and reputable traders in the community, who
+                form our value team. They discusses values daily and
+                participates in meetings approximately twice a week to go over
+                market changes. Based on the discussions and analyses, value
+                team members make submissions that include reasoning to explain
+                the submitted value. Each submission undergoes a thorough review
+                to ensure it is reasonable and unbiased before it can impact an
+                item&apos;s value. Only those submissions that meet these
+                criteria are accepted.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-2">
+              <AccordionTrigger>
+                Where does item information come from?
+              </AccordionTrigger>
+              <AccordionContent>
+                All item information is sourced from official data provided by
+                Badimo, or other trustworthy sources such as the Jailbreak
+                Fandom.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-3">
+              <AccordionTrigger>Is JB Values 100% accurate?</AccordionTrigger>
+              <AccordionContent>
+                Although it is impossible for a value list to be 100% accurate,
+                as the market is constantly changing and is subjective to each
+                trader, our team works extremely hard to provide you with the
+                most accurate information possible.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-4">
+              <AccordionTrigger>
+                How often is JB Values updated?
+              </AccordionTrigger>
+              <AccordionContent>
+                Submissions are created daily, and values are updated based off
+                them every 6 minutes. While there will always be delays as we
+                research changes prior to rolling them out, our goal is to
+                update you on them as soon as possible.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-5">
+              <AccordionTrigger>
+                What if an item is not on JB Values?
+              </AccordionTrigger>
+              <AccordionContent>
+                We try to add as many items as we possibly can, but primarily
+                focus on having items that are popular and have a clear value.
+                If you feel like there isn&apos;t an item on our value list that
+                should be added, you can fill out our item request form.
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
       </div>
     </div>
