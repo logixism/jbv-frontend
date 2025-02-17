@@ -1,101 +1,176 @@
-import Image from "next/image";
+"use client";
+
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import { useEffect, useState } from "react";
+import { Line, LineChart } from "recharts";
+
+type TorpedoData = {
+  valuehistory: {
+    [date: string]: number;
+  };
+  value: number;
+};
+type ChartData = { date: string; value: number }[];
+
+async function getTorpedoData(): Promise<TorpedoData> {
+  const res = await fetch("https://jbvalues.com/api/itemdata/v0");
+  const json = await res.json();
+
+  return json;
+}
+
+const fallbackChartData = [
+  { date: "January", value: 186 },
+  { date: "February", value: 305 },
+  { date: "March", value: 237 },
+  { date: "April", value: 73 },
+  { date: "May", value: 209 },
+  { date: "June", value: 214 },
+];
+
+const chartConfig = {
+  value: {
+    label: "Value",
+    color: "#E4E4E7",
+  },
+} satisfies ChartConfig;
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [torpedoData, setTorpedoData] = useState<TorpedoData>();
+  const [chartData, setChartData] = useState<ChartData>();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    async function fetchData() {
+      const data = (await getTorpedoData()) as TorpedoData;
+
+      if (!data) {
+        return;
+      }
+
+      setTorpedoData(data);
+
+      const chartData = Object.entries(data.valuehistory)
+        .filter(([], index, self) => index % 7 === 0 && index < self.length - 7)
+        .map(([date, value]) => ({
+          date,
+          value: Number(value),
+        }));
+
+      setChartData(chartData);
+    }
+
+    fetchData();
+  }, []);
+
+  return (
+    <div>
+      <div className="max-w-130">
+        <h1 className="text-zinc-50 font-bold text-4xl">JBValues</h1>
+        <p>
+          We are a ROBLOX Jailbreak trading website with a variety of features
+          made to assist you in trading. These include a value list, a value
+          calculator, a dupe list, and much more!
+        </p>
+      </div>
+      <div className="flex flex-col text-center mt-12 w-full">
+        <h2 className="font-semibold text-3xl">We provide</h2>
+        <div className="flex mt-12 md:flex-row flex-col md:justify-between items-center">
+          <div className="outline-1 p-4 text-left outline-zinc-800 rounded-lg w-100 h-60 max-h-60">
+            <h4 className="text-sm text-zinc-50">Values</h4>
+            <h2 className="font-bold text-zinc-50">Torpedo value over time</h2>
+            <ChartContainer config={chartConfig} className="pt-8 h-40 w-full">
+              <LineChart
+                accessibilityLayer
+                data={chartData || fallbackChartData}
+              >
+                <Line
+                  dataKey="value"
+                  type="natural"
+                  stroke="var(--color-value)"
+                  strokeWidth={2}
+                  dot={false}
+                />
+                <ChartTooltip
+                  cursor={false}
+                  content={<ChartTooltipContent hideLabel hideIndicator />}
+                />
+              </LineChart>
+            </ChartContainer>
+          </div>
+          <div className="outline-1 p-4 text-left outline-zinc-800 rounded-lg w-100 h-60 max-h-60">
+            <h4 className="text-sm text-zinc-50">Calculator</h4>
+            <h2 className="font-bold text-zinc-50">Least rich JBValues user</h2>
+            <div>
+              <div className="flex flex-row mt-4 justify-between">
+                <p className="font-semibold text-zinc-50">Torpedo x3</p>
+                <p className="font-bold text-zinc-200">
+                  {torpedoData?.value
+                    ? `$ ${(torpedoData?.value * 3).toLocaleString()}`
+                    : "loading..."}
+                </p>
+              </div>
+              <div className="flex flex-row mt-2 justify-between">
+                <p className="font-semibold text-zinc-50">Torpedo x5</p>
+                <p className="font-bold text-zinc-200">
+                  {torpedoData?.value
+                    ? `$ ${(torpedoData?.value * 5).toLocaleString()}`
+                    : "loading..."}
+                </p>
+              </div>
+              <div className="flex flex-row mt-2 justify-between">
+                <p className="font-semibold text-zinc-50">Torpedo x10</p>
+                <p className="font-bold text-zinc-200">
+                  {torpedoData?.value
+                    ? `$ ${(torpedoData?.value * 10).toLocaleString()}`
+                    : "loading..."}
+                </p>
+              </div>
+              <div className="border-t border-zinc-800 my-4" />
+              <div className="flex flex-row justify-between">
+                <p className="font-semibold text-zinc-50">Total</p>
+                <p className="font-bold text-zinc-200">
+                  {torpedoData?.value
+                    ? `$ ${(torpedoData?.value * 18).toLocaleString()}`
+                    : "loading..."}
+                </p>
+              </div>
+            </div>
+          </div>{" "}
+          <div className="outline-1 p-4 text-left outline-zinc-800 rounded-lg w-100 h-60 max-h-60">
+            <h4 className="text-sm text-zinc-50">Dupe list</h4>
+            <h2 className="font-bold text-zinc-50">Is that item a dupe..?</h2>
+            <div>
+              <div className="flex flex-row mt-4 justify-between">
+                <p className="font-semibold text-zinc-50">logixism&apos;s P1</p>
+                <p className="font-bold text-red-400">Duped</p>
+              </div>
+              <div className="flex flex-row mt-4 justify-between">
+                <p className="font-semibold text-zinc-50">
+                  deimp12&apos;s Pickup
+                </p>
+                <p className="font-bold text-red-400">Duped</p>
+              </div>
+              <div className="flex flex-row mt-4 justify-between">
+                <p className="font-semibold text-zinc-50">
+                  cancle5&apos;s Parision
+                </p>
+                <p className="font-bold text-red-400">Duped</p>
+              </div>
+              <div className="flex flex-row mt-4 justify-between">
+                <p className="font-semibold text-zinc-50">
+                  zain&apos;s Administrator
+                </p>
+                <p className="font-bold text-green-300">Not duped</p>
+              </div>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
     </div>
   );
 }
