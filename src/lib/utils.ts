@@ -28,7 +28,7 @@ export function generateChartData(
 
 export const categories = {
   s: "Spoiler",
-  t: "Tire",
+  t: "Texture",
   r: "Rim",
   v: "Vehicle",
   c: "Color",
