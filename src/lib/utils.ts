@@ -27,6 +27,7 @@ export function generateChartData(
 }
 
 export const categories = {
+  s: "Spoiler",
   t: "Tire",
   r: "Rim",
   v: "Vehicle",
