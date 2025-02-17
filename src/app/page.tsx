@@ -1,6 +1,16 @@
 "use client";
 
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
@@ -44,6 +54,8 @@ export default function Home() {
   const [torpedoData, setTorpedoData] = useState<TorpedoData>();
   const [chartData, setChartData] = useState<ChartData>();
 
+  const [unofficialWarningOpen, setUnofficialWarningOpen] = useState(true);
+
   useEffect(() => {
     async function fetchData() {
       const data = (await getTorpedoData()) as TorpedoData;
@@ -69,6 +81,33 @@ export default function Home() {
 
   return (
     <div>
+      <AlertDialog open={unofficialWarningOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Warning</AlertDialogTitle>
+            <AlertDialogDescription>
+              This website is a work-in-progress <b>fan-made</b> website for
+              JBValues. If you stumbled upon here accidentally, you probably
+              meant to go to the official one.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel
+              className="cursor-pointer"
+              onClick={() => setUnofficialWarningOpen(false)}
+            >
+              I&apos;ll stay
+            </AlertDialogCancel>
+            <AlertDialogAction
+              className="cursor-pointer"
+              onClick={() => (window.location.href = "https://jbvalues.com")}
+            >
+              Send me to the official website
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <div className="max-w-130">
         <h1 className="text-zinc-50 font-bold text-4xl">JBValues</h1>
         <p>
