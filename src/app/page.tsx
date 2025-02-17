@@ -22,6 +22,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { generateChartData } from "@/lib/utils";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -72,14 +73,7 @@ export default function Home() {
 
       setTorpedoData(data);
 
-      const chartData = Object.entries(data.valuehistory)
-        .filter(([], index, self) => index % 7 === 0 && index < self.length - 7)
-        .map(([date, value]) => ({
-          date,
-          value: Number(value),
-        }));
-
-      setChartData(chartData);
+      setChartData(generateChartData(data, 12));
     }
 
     fetchData();
@@ -161,7 +155,7 @@ export default function Home() {
             <h2 className="font-bold">Least rich JBValues user</h2>
             <div>
               <div className="flex flex-row mt-4 justify-between">
-                <p className="font-semibold">Torpedo x3</p>
+                <p className="font-medium">Torpedo x3</p>
                 <p className="font-bold dark:text-zinc-200">
                   {torpedoData?.value
                     ? `$ ${(torpedoData?.value * 3).toLocaleString()}`
@@ -169,7 +163,7 @@ export default function Home() {
                 </p>
               </div>
               <div className="flex flex-row mt-2 justify-between">
-                <p className="font-semibold">Torpedo x5</p>
+                <p className="font-medium">Torpedo x5</p>
                 <p className="font-bold dark:text-zinc-200">
                   {torpedoData?.value
                     ? `$ ${(torpedoData?.value * 5).toLocaleString()}`
@@ -177,7 +171,7 @@ export default function Home() {
                 </p>
               </div>
               <div className="flex flex-row mt-2 justify-between">
-                <p className="font-semibold">Torpedo x10</p>
+                <p className="font-medium">Torpedo x10</p>
                 <p className="font-bold dark:text-zinc-200">
                   {torpedoData?.value
                     ? `$ ${(torpedoData?.value * 10).toLocaleString()}`
@@ -186,7 +180,7 @@ export default function Home() {
               </div>
               <div className="border-t border-zinc-800 my-4" />
               <div className="flex flex-row justify-between">
-                <p className="font-semibold">Total</p>
+                <p className="font-medium">Total</p>
                 <p className="font-bold dark:text-zinc-200">
                   {torpedoData?.value
                     ? `$ ${(torpedoData?.value * 18).toLocaleString()}`
@@ -200,25 +194,25 @@ export default function Home() {
             <h2 className="font-bold">Is that item a dupe..?</h2>
             <div>
               <div className="flex flex-row mt-4 justify-between">
-                <p className="font-semibold">logixism&apos;s P1</p>
+                <p className="font-medium">logixism&apos;s P1</p>
                 <p className="font-bold dark:text-red-400 text-red-500">
                   Duped
                 </p>
               </div>
               <div className="flex flex-row mt-4 justify-between">
-                <p className="font-semibold">deimp12&apos;s Pickup</p>
+                <p className="font-medium">deimp12&apos;s Pickup</p>
                 <p className="font-bold dark:text-red-400 text-red-500">
                   Duped
                 </p>
               </div>
               <div className="flex flex-row mt-4 justify-between">
-                <p className="font-semibold">cancle5&apos;s Parisian</p>
+                <p className="font-medium">cancle5&apos;s Parisian</p>
                 <p className="font-bold dark:text-red-400 text-red-500">
                   Duped
                 </p>
               </div>
               <div className="flex flex-row mt-4 justify-between">
-                <p className="font-semibold">zain&apos;s Administrator</p>
+                <p className="font-medium">zain&apos;s Administrator</p>
                 <p className="font-bold dark:text-green-300 text-green-500">
                   Not duped
                 </p>
