@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { categories, getCategoryFromId } from "@/lib/utils";
+import { categories, getCategoryFromId, getItemsAsArray } from "@/lib/utils";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FaArrowDown } from "react-icons/fa";
@@ -84,29 +84,9 @@ export default function ValueList() {
   }, [items, search, category, order, hideDupes]);
 
   useEffect(() => {
-    fetch("https://jbvalues.com/api/items")
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`${res.status} ${res.statusText}`);
-        }
-        res.json().then((json) => {
-          const array = Object.entries(json).map(([key, value]) => {
-            const item = value as {
-              name: string;
-              value: number;
-            };
-
-            return {
-              id: key,
-              name: item.name,
-              value: item.value,
-            };
-          }) as Items;
-
-          setItems(array);
-        });
-      })
-      .catch((err) => console.error(err));
+    getItemsAsArray().then((items) => {
+      setItems(items);
+    });
   }, []);
 
   return (

@@ -42,3 +42,31 @@ export function getCategoryFromId(id: string) {
   }
   return "Category missing";
 }
+
+type Items = {
+  id: string;
+  name: string;
+  value: number;
+}[];
+
+export async function getItemsAsArray(includeDupes = true) {
+  const res = await fetch("https://jbvalues.com/api/items");
+  const json = await res.json();
+
+  const array = Object.entries(json)
+    .filter(([key, value]) => includeDupes || !key.includes("duped"))
+    .map(([key, value]) => {
+      const item = value as {
+        name: string;
+        value: number;
+      };
+
+      return {
+        id: key,
+        name: item.name,
+        value: item.value,
+      };
+    }) as Items;
+
+  return array;
+}

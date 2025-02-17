@@ -34,7 +34,7 @@ import { Button } from "@/components/ui/button";
 import { ImageWithFallback } from "@/components/image-with-fallback";
 import { Separator } from "@/components/ui/separator";
 
-type Item = {
+export type Item = {
   id: string;
   name: string;
   description?: string;
