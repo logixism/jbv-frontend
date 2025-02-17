@@ -59,6 +59,7 @@ function CalculatorEntry({
             type="number"
             step={1}
             min={0}
+            max={10000}
             value={item.quantity || 0}
             className="w-28 h-full !text-2xl text-center font-medium"
             onChange={(e) => {
@@ -75,6 +76,10 @@ function CalculatorEntry({
               }
 
               if (isNaN(parseInt(e.target.value))) {
+                return;
+              }
+
+              if (parseInt(e.target.value) > 10000) {
                 return;
               }
 
