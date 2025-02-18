@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import {
   NavigationMenu,
@@ -15,14 +17,16 @@ import { FaDiscord, FaTwitter } from "react-icons/fa";
 import { MdLightMode, MdDarkMode } from "react-icons/md";
 import { useTheme } from "next-themes";
 import { Separator } from "./ui/separator";
+import SettingsDialog from "./settings-dialog";
+import { Settings } from "lucide-react";
 
 export function Navbar() {
   const { setTheme } = useTheme();
 
   return (
-    <header className="sticky top-0 z-50 w-full">
+    <header suppressHydrationWarning className="sticky top-0 z-50 w-full">
       <div className="flex items-center justify-center dark:bg-zinc-950/60 bg-zinc-50/60 backdrop-blur-lg">
-        <div className="container flex items-center h-12">
+        <div className="flex w-full justify-between px-8 h-12">
           <Link href="/">
             <Image
               className="w-12 h-12"
@@ -111,6 +115,15 @@ export function Navbar() {
                 <MdDarkMode className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
                 <span className="sr-only">Toggle theme</span>
               </Button>
+              <SettingsDialog
+                trigger={
+                  <Button variant={"ghost"} size={"icon"}>
+                    <div className="flex items-center justify-center transition duration-1000 hover:rotate-360 w-full h-full">
+                      <Settings />
+                    </div>
+                  </Button>
+                }
+              />
             </div>
           </div>
         </div>

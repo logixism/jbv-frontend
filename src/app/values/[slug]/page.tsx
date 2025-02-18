@@ -174,7 +174,7 @@ export default async function Item({
                 .map((submission) => (
                   <div
                     key={submission.date}
-                    className="flex flex-row bg-zinc-900 h-16 rounded-lg overflow-clip"
+                    className="flex flex-row border border-zinc-800 h-16 rounded-lg overflow-clip"
                   >
                     <ImageWithFallback
                       alt="submitter profile picture"

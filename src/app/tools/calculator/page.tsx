@@ -49,7 +49,7 @@ function CalculatorEntry({
       <Separator orientation="vertical" className="mx-1" />
       <div className="flex flex-row items-center ml-2 w-full">
         <div className="flex flex-col justify-between w-full">
-          <h3 className="text-lg">{item.name}</h3>
+          <h3 className="text-sm md:text-lg">{item.name}</h3>
           <p className="font-semibold">
             $ {(item.value * item.quantity).toLocaleString()}
           </p>
@@ -61,7 +61,7 @@ function CalculatorEntry({
             min={0}
             max={10000}
             value={item.quantity || 0}
-            className="w-28 h-full !text-2xl text-center font-medium"
+            className="w-18 md:w-28 h-full !text-2xl text-center font-medium"
             onChange={(e) => {
               if (e.target.value === "") {
                 setSelectedItems(
@@ -125,7 +125,7 @@ function Calculator() {
   }, [selectedItems]);
 
   return (
-    <div className="p-4 outline outline-zinc-800 rounded-lg w-full">
+    <div className="p-4 md:outline outline-zinc-800 rounded-lg w-full">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
@@ -235,7 +235,7 @@ function Calculator() {
 
 export default function Page() {
   return (
-    <div className="flex space-x-8 justify-center w-full">
+    <div className="flex flex-col space-y-8 lg:flex-row md:space-y-0 md:space-x-8 justify-center w-full">
       <Calculator />
       <Calculator />
     </div>

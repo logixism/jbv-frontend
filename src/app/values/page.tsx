@@ -1,5 +1,6 @@
 "use client";
 
+import { ImageWithFallback } from "@/components/image-with-fallback";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,18 +31,18 @@ function Item(props: {
 }) {
   return (
     <a href={`/values/${props.data.id}`} className="cursor-pointer">
-      <div className="outline outline-zinc-800 rounded-lg p-4 h-fit transition duration-300 ease-in-out hover:scale-105 hover:shadow-lg">
+      <div className="w-full h-fit outline outline-zinc-800 rounded-lg p-4 transition duration-300 ease-in-out hover:scale-105 hover:shadow-lg">
         <span className="text-sm">{getCategoryFromId(props.data.id)}</span>
         <div className="flex flex-row items-center space-x-4">
-          <h4 className="text-xl font-semibold">{props.data.name}</h4>
+          <h4 className="text-lg font-semibold">{props.data.name}</h4>
           {isDuped(props.data.id) && <Badge variant="destructive">Duped</Badge>}
         </div>
-
-        <Image
+        <ImageWithFallback
           className="py-4 h-48 w-full object-contain"
           width={1024}
           height={1024}
           src={`https://jbvalues.com/images/itemimages/${props.data.id}.webp`}
+          fallbackSrc="/logo.png"
           alt={`an image of ${props.data.name}`}
         />
         <div className="flex flex-row justify-between">
@@ -91,9 +92,9 @@ export default function ValueList() {
 
   return (
     <div>
-      <div className="flex justify-between items-center w-full h-16 mb-4 space-x-4">
+      <div className="flex flex-col lg:flex-row justify-between items-center w-full mb-4 lg:space-x-4">
         <Select defaultValue="All categories" onValueChange={setCategory}>
-          <SelectTrigger className="w-[200px]">
+          <SelectTrigger className="w-full lg:w-[200px]">
             <SelectValue placeholder="Select a category" />
           </SelectTrigger>
           <SelectContent>
@@ -112,7 +113,7 @@ export default function ValueList() {
         </Select>
 
         <Select defaultValue="Descending" onValueChange={setOrder}>
-          <SelectTrigger className="w-[200px]">
+          <SelectTrigger className="w-full lg:w-[200px]">
             <SelectValue placeholder="Select a category" />
           </SelectTrigger>
           <SelectContent>
@@ -139,7 +140,7 @@ export default function ValueList() {
             )
           }
         >
-          <SelectTrigger className="w-[260px]">
+          <SelectTrigger className="w-full lg:w-[260px]">
             <SelectValue placeholder="Select a category" />
           </SelectTrigger>
           <SelectContent>
@@ -164,7 +165,7 @@ export default function ValueList() {
         />
       </div>
 
-      <div className="grid grid-cols-4 gap-8">
+      <div className="grid gap-8 grid-cols-[repeat(auto-fit,minmax(18rem,1fr))]">
         {visibleItems
           .sort((a, b) => {
             switch (order) {
