@@ -1,45 +1,130 @@
 "use client";
 
-import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
+import * as Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+import { useTheme } from "next-themes";
+import { useState } from "react";
 
 export type ChartData = { date: string; value: number }[];
 
-const chartConfig = {
-  value: {
-    label: "Value",
-  },
-} satisfies ChartConfig;
-
 export default function Chart({ chartData }: { chartData: ChartData }) {
+  const { theme } = useTheme();
+  const [timeRange, setTimeRange] = useState<'1W' | '1M' | '3M' | '1Y' | 'ALL' > ('3M');
+
+  const filterDataByRange = (data: ChartData) => {
+    const ranges = {
+      '1W': 7,
+      '1M': 30,
+      '3M': 90,
+      '1Y': 365,
+      'ALL': Infinity
+    };
+
+    const daysToShow = ranges[timeRange];
+    
+    const cutoffDate = new Date();
+    cutoffDate.setDate(cutoffDate.getDate() - daysToShow);
+    
+    return data.filter(point => {
+      const pointDate = new Date(point.date);
+      return pointDate >= cutoffDate || timeRange === 'ALL';
+    });
+  };
+
+  const filteredData = filterDataByRange(chartData);
+
+  const options: Highcharts.Options = {
+    chart: {
+      backgroundColor: "transparent",
+      style: {
+        fontFamily: "Montserrat, sans-serif",
+      },
+      zooming: {
+        mouseWheel: {
+          enabled: false,
+        },
+      },
+    },
+    title: {
+      text: "",
+    },
+    xAxis: {
+      categories: filteredData.map(point => point.date),
+      labels: {
+        style: {
+          color: theme === "dark" ? "#d4d4d4" : "#3f3f46",
+        },
+        autoRotation: [0, -3, -6, -9, -12],
+      },
+      gridLineWidth: 0,
+    },
+    yAxis: {
+      title: {
+        text: null,
+      },
+      labels: {
+        style: {
+          color: theme === "dark" ? "#d4d4d4" : "#3f3f46",
+        },
+      },
+      gridLineWidth: 0,
+    },
+    plotOptions: {
+      spline: {
+        marker: {
+          enabled: false,
+        },
+        lineWidth: 1.5,
+      },
+    },
+    legend: {
+      itemStyle: {
+        color: "white",
+      },
+    },
+    series: [
+      {
+        type: "spline",
+        name: "Value",
+        data: filteredData.map(point => point.value),
+        color: "white",
+        marker: {
+          enabled: false,
+        },
+      },
+    ],
+    tooltip: {
+      backgroundColor: theme === "dark" ? "black" : "white",
+      style: {
+        color: theme === "dark" ? "#FFFFFF" : "#000000",
+      },
+      shared: true,
+      headerFormat: "<b>{point.x}</b><br/>",
+      pointFormat: "{series.name}: ${point.y:,.0f}",
+    },
+    credits: {
+      enabled: false,
+    },
+  };
+
   return (
-    <ChartContainer config={chartConfig} className="h-40 w-full">
-      <LineChart accessibilityLayer data={chartData}>
-        <Line
-          dataKey="value"
-          type="natural"
-          stroke="var(--chart-1)"
-          strokeWidth={2}
-          dot={false}
-        />
-        <CartesianGrid stroke="var(--border)" />
-        <XAxis
-          dataKey="date"
-          tick={{ fontSize: 12 }}
-          tickLine={false}
-          axisLine={false}
-        />
-        <YAxis tick={{ fontSize: 10 }} tickLine={false} axisLine={false} />
-        <ChartTooltip
-          cursor={false}
-          content={<ChartTooltipContent hideIndicator />}
-        />
-      </LineChart>
-    </ChartContainer>
+    <div className="w-full h-full">
+      <div className="flex gap-2 mb-4 justify-end">
+        {(['1W', '1M', '3M', '1Y', 'ALL'] as const).map((range) => (
+          <button
+            key={range}
+            onClick={() => setTimeRange(range)}
+            className={`px-3 py-1 rounded text-sm ${
+              timeRange === range
+                ? 'bg-zinc-900 text-white'
+                : 'bg-zinc-100 text-zinc-800 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700'
+            }`}
+          >
+            {range}
+          </button>
+        ))}
+      </div>
+      <HighchartsReact highcharts={Highcharts} options={options} />
+    </div>
   );
 }

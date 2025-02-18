@@ -1,12 +1,5 @@
 import Image from "next/image";
 
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
-
 import { Line, LineChart } from "recharts";
 import Chart from "@/components/chart";
 import { generateChartData, getCategoryFromId } from "@/lib/utils";
