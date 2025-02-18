@@ -30,10 +30,10 @@ function Item(props: {
 }) {
   return (
     <a href={`/values/${props.data.id}`} className="cursor-pointer">
-      <div className="outline outline-zinc-800 rounded-lg p-4 h-fit transition duration-300 ease-in-out hover:scale-105 hover:shadow-lg">
+      <div className="w-72 h-72 outline outline-zinc-800 rounded-lg p-4 transition duration-300 ease-in-out hover:scale-105 hover:shadow-lg">
         <span className="text-sm">{getCategoryFromId(props.data.id)}</span>
         <div className="flex flex-row items-center space-x-4">
-          <h4 className="text-xl font-semibold">{props.data.name}</h4>
+          <h4 className="text-lg font-semibold">{props.data.name}</h4>
           {isDuped(props.data.id) && <Badge variant="destructive">Duped</Badge>}
         </div>
 
@@ -164,7 +164,7 @@ export default function ValueList() {
         />
       </div>
 
-      <div className="grid grid-cols-4 gap-8">
+      <div className="grid gap-8 grid-cols-[repeat(auto-fit,minmax(18rem,1fr))] justify-items-center">
         {visibleItems
           .sort((a, b) => {
             switch (order) {
