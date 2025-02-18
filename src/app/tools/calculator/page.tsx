@@ -120,10 +120,6 @@ function Calculator() {
     });
   }, []);
 
-  useEffect(() => {
-    console.log(selectedItems);
-  }, [selectedItems]);
-
   return (
     <div className="p-4 md:outline outline-zinc-800 rounded-lg w-full">
       <Popover open={open} onOpenChange={setOpen}>
