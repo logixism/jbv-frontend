@@ -108,7 +108,7 @@ type SelectedItem = {
 
 type SelectedItems = SelectedItem[];
 
-function Calculator() {
+export default function Calculator() {
   const [open, setOpen] = useState(false);
   const [selectedItems, setSelectedItems] = useState<SelectedItems>([]);
 
@@ -125,119 +125,112 @@ function Calculator() {
   }, [selectedItems]);
 
   return (
-    <div className="p-4 outline outline-zinc-800 rounded-lg w-full">
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            role="combobox"
-            aria-expanded={open}
-            className="w-full justify-between"
-          >
-            Select item to add
-            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-full p-0">
-          <Command className="w-full">
-            <CommandInput className="w-full" placeholder="Search item" />
-            <CommandList className="w-full">
-              <CommandEmpty>No item found</CommandEmpty>
-              <CommandGroup className="w-full">
-                {items.map((item) => (
-                  <CommandItem
-                    key={item.id}
-                    value={item.name}
-                    onSelect={(currentValue) => {
-                      if (!item.id) return;
+    <div className="flex items-center justify-center w-full">
+      <div className="p-4 outline outline-zinc-800 rounded-lg w-full">
+        <Popover open={open} onOpenChange={setOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={open}
+              className="w-full justify-between"
+            >
+              Select item to add
+              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-full p-0">
+            <Command className="w-full">
+              <CommandInput className="w-full" placeholder="Search item" />
+              <CommandList className="w-full" key="hi">
+                <CommandEmpty key="hi">No item found</CommandEmpty>
+                <CommandGroup className="w-full" key="hi">
+                  {items.map((item) => (
+                    <CommandItem
+                      key={item.id}
+                      value={item.name}
+                      onSelect={(currentValue) => {
+                        if (!item.id) return;
 
-                      if (
-                        selectedItems.findIndex(
-                          (selectedItem) => selectedItem.id === item.id
-                        ) !== -1
-                      ) {
-                        setSelectedItems(
-                          selectedItems.map((selectedItem) => {
-                            if (selectedItem.id === item.id) {
-                              return {
-                                ...selectedItem,
-                                quantity: selectedItem.quantity + 1,
-                              };
-                            }
-                            return selectedItem;
-                          })
-                        );
+                        if (
+                          selectedItems.findIndex(
+                            (selectedItem) => selectedItem.id === item.id
+                          ) !== -1
+                        ) {
+                          setSelectedItems(
+                            selectedItems.map((selectedItem) => {
+                              if (selectedItem.id === item.id) {
+                                return {
+                                  ...selectedItem,
+                                  quantity: selectedItem.quantity + 1,
+                                };
+                              }
+                              return selectedItem;
+                            })
+                          );
+
+                          setOpen(false);
+                          return;
+                        }
+
+                        setSelectedItems([
+                          ...selectedItems,
+                          {
+                            id: item.id,
+                            name: item.name!,
+                            value: item.value!,
+                            quantity: 1,
+                          },
+                        ]);
 
                         setOpen(false);
-                        return;
-                      }
-
-                      setSelectedItems([
-                        ...selectedItems,
-                        {
-                          id: item.id,
-                          name: item.name!,
-                          value: item.value!,
-                          quantity: 1,
-                        },
-                      ]);
-
-                      setOpen(false);
-                    }}
-                  >
-                    <ImageWithFallback
-                      alt="img"
-                      className="max-w-8 max-h-8 object-contain"
-                      width={256}
-                      height={256}
-                      fallbackSrc="/logo.png"
-                      src={`https://jbvalues.com/images/itemimages/${item.id}.webp`}
-                    />
-                    {item.name}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            </CommandList>
-          </Command>
-        </PopoverContent>
-      </Popover>
-      <div className="space-y-4 mt-4 max-h-160 overflow-y-scroll">
-        {selectedItems
-          .filter((item) => item.quantity > 0)
-          .map((item) => (
-            <CalculatorEntry
-              key={item.id}
-              item={item}
-              selectedItems={selectedItems}
-              setSelectedItems={setSelectedItems}
-            />
-          ))}
-      </div>
-      <div className="flex flex-row justify-between ml-1 mt-4">
-        <p className="font-semibold">
-          Total: $
+                      }}
+                    >
+                      <ImageWithFallback
+                        alt="img"
+                        className="max-w-8 max-h-8 object-contain"
+                        width={256}
+                        height={256}
+                        fallbackSrc="/logo.png"
+                        src={`https://jbvalues.com/images/itemimages/${item.id}.webp`}
+                      />
+                      {item.name}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </PopoverContent>
+        </Popover>
+        <div className="space-y-4 mt-4 max-h-160 overflow-y-scroll">
           {selectedItems
-            .reduce((acc, item) => acc + item.value * item.quantity, 0)
-            .toLocaleString()}
-        </p>
-        <Button
-          disabled={selectedItems.length === 0}
-          onClick={() => {
-            setSelectedItems([]);
-          }}
-        >
-          Clear
-        </Button>
+            .filter((item) => item.quantity > 0)
+            .map((item) => (
+              <CalculatorEntry
+                key={item.id}
+                item={item}
+                selectedItems={selectedItems}
+                setSelectedItems={setSelectedItems}
+              />
+            ))}
+        </div>
+        <div className="flex flex-row justify-between ml-1 mt-4">
+          <p className="font-semibold">
+            Total: $
+            {selectedItems
+              .reduce((acc, item) => acc + item.value * item.quantity, 0)
+              .toLocaleString()}
+          </p>
+          <Button
+            disabled={selectedItems.length === 0}
+            onClick={() => {
+              setSelectedItems([]);
+            }}
+          >
+            Clear
+          </Button>
+        </div>
       </div>
-    </div>
-  );
-}
-
-export default function Page() {
-  return (
-    <div className="flex space-x-8 justify-center w-full">
-      <Calculator />
-      <Calculator />
     </div>
   );
 }
