@@ -35,6 +35,7 @@ function Item(props: {
         <span className="text-sm">{getCategoryFromId(props.data.id)}</span>
         <div className="flex flex-row items-center space-x-4">
           <h4 className="text-lg font-semibold">{props.data.name}</h4>
+          <h4 className="text-lg font-semibold">{props.data.name}</h4>
           {isDuped(props.data.id) && <Badge variant="destructive">Duped</Badge>}
         </div>
         <ImageWithFallback

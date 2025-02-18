@@ -108,7 +108,7 @@ type SelectedItem = {
 
 type SelectedItems = SelectedItem[];
 
-function Calculator() {
+export default function Calculator() {
   const [open, setOpen] = useState(false);
   const [selectedItems, setSelectedItems] = useState<SelectedItems>([]);
 
@@ -235,7 +235,7 @@ function Calculator() {
 
 export default function Page() {
   return (
-    <div className="flex flex-col space-y-8 lg:flex-row md:space-y-0 md:space-x-8 justify-center w-full">
+    <div className="flex space-x-8 justify-center w-full">
       <Calculator />
       <Calculator />
     </div>
