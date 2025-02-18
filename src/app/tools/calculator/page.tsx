@@ -111,7 +111,6 @@ type SelectedItems = SelectedItem[];
 function Calculator() {
   const [open, setOpen] = useState(false);
   const [selectedItems, setSelectedItems] = useState<SelectedItems>([]);
-
   const [items, setItems] = useState([{} as Partial<Item>]);
 
   useEffect(() => {
