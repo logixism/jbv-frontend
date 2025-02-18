@@ -108,7 +108,7 @@ type SelectedItem = {
 
 type SelectedItems = SelectedItem[];
 
-export default function Calculator() {
+function Calculator() {
   const [open, setOpen] = useState(false);
   const [selectedItems, setSelectedItems] = useState<SelectedItems>([]);
 
