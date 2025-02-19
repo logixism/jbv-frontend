@@ -37,6 +37,7 @@ function Item(props: {
           <h4 className="text-lg font-semibold">{props.data.name}</h4>
           {isDuped(props.data.id) && <Badge variant="destructive">Duped</Badge>}
         </div>
+
         <ImageWithFallback
           className="py-4 h-48 w-full object-contain"
           width={1024}
