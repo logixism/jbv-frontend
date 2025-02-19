@@ -16,7 +16,13 @@ const ranges = {
   ALL: Infinity,
 };
 
-export default function Chart({ chartData }: { chartData: ChartData }) {
+export default function Chart({
+  chartData,
+  showUi = true,
+}: {
+  chartData: ChartData;
+  showUi?: boolean;
+}) {
   const { theme } = useTheme();
   const [timeRange, setTimeRange] = useState<keyof typeof ranges>("3M");
 
@@ -36,7 +42,6 @@ export default function Chart({ chartData }: { chartData: ChartData }) {
 
   const options: Highcharts.Options = {
     chart: {
-      height: 250,
       backgroundColor: "transparent",
       style: {
         fontFamily: "Montserrat, sans-serif",
@@ -51,6 +56,7 @@ export default function Chart({ chartData }: { chartData: ChartData }) {
       text: "",
     },
     xAxis: {
+      visible: showUi,
       categories: filteredData.map((point) => point.date),
       labels: {
         style: {
@@ -61,6 +67,7 @@ export default function Chart({ chartData }: { chartData: ChartData }) {
       gridLineWidth: 0,
     },
     yAxis: {
+      visible: showUi,
       title: {
         text: null,
       },
@@ -80,6 +87,7 @@ export default function Chart({ chartData }: { chartData: ChartData }) {
       },
     },
     legend: {
+      enabled: showUi,
       itemStyle: {
         color: theme === "dark" ? "#FAFAFA" : "#09090B",
       },
@@ -111,17 +119,19 @@ export default function Chart({ chartData }: { chartData: ChartData }) {
 
   return (
     <div className="w-full h-full">
-      <div className="flex gap-2 mb-4 justify-end">
-        {Object.keys(ranges).map((range) => (
-          <Button
-            variant={range === timeRange ? "default" : "outline"}
-            key={range}
-            onClick={() => setTimeRange(range as keyof typeof ranges)}
-          >
-            {range}
-          </Button>
-        ))}
-      </div>
+      {showUi && (
+        <div className="flex gap-2 mb-4 justify-end">
+          {Object.keys(ranges).map((range) => (
+            <Button
+              variant={range === timeRange ? "default" : "outline"}
+              key={range}
+              onClick={() => setTimeRange(range as keyof typeof ranges)}
+            >
+              {range}
+            </Button>
+          ))}
+        </div>
+      )}
       <HighchartsReact highcharts={Highcharts} options={options} />
     </div>
   );

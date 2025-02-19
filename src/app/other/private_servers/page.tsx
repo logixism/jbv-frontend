@@ -139,10 +139,10 @@ export default function Page() {
               )}
               {server.type}
             </p>
-            <h4 className="font-semibold">{server.name}</h4>
+            <h4 className="font-bold">{server.name}</h4>
             <div className="flex flex-row justify-between mt-2">
               <p className="font-medium">Owner</p>
-              <p>{server.owner}</p>
+              <p className="font-semibold">{server.owner}</p>
             </div>
           </Link>
         ))}

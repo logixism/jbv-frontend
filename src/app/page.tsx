@@ -1,5 +1,6 @@
 "use client";
 
+import Chart from "@/components/chart";
 import {
   AccordionContent,
   Accordion,
@@ -131,25 +132,8 @@ export default function Home() {
         <div className="flex mt-12 md:flex-row flex-col md:justify-between items-center">
           <div className="outline-1 p-4 text-left outline-zinc-800 rounded-lg w-100 h-60 max-h-60">
             <h4 className="text-sm">Values</h4>
-            <h2 className="font-bold">Torpedo value over time</h2>
-            <ChartContainer config={chartConfig} className="pt-8 h-40 w-full">
-              <LineChart
-                accessibilityLayer
-                data={chartData || fallbackChartData}
-              >
-                <Line
-                  dataKey="value"
-                  type="natural"
-                  stroke="var(--chart-1)"
-                  strokeWidth={2}
-                  dot={false}
-                />
-                <ChartTooltip
-                  cursor={false}
-                  content={<ChartTooltipContent hideLabel hideIndicator />}
-                />
-              </LineChart>
-            </ChartContainer>
+            <h2 className="font-bold">Torpedo value over the last 3 months</h2>
+            <Chart showUi={false} chartData={chartData ?? fallbackChartData} />
           </div>
           <div className="outline-1 p-4 text-left outline-zinc-800 rounded-lg w-100 h-60 max-h-60">
             <h4 className="text-sm ">Calculator</h4>

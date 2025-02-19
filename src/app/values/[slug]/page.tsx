@@ -143,7 +143,7 @@ export default async function Item({
           </div>
         </div>
 
-        <div className="mt-8 w-full">
+        <div className="mt-8 w-full h-72">
           <Chart chartData={generateChartData(itemData)} />
         </div>
 
