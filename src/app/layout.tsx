@@ -51,7 +51,7 @@ export default function RootLayout({
         <div className="text-zinc-950 dark:text-zinc-200 bg-zinc-50 dark:bg-zinc-950">
           {isClient && (
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-              {preferredNavMethod === "sidebar" ? (
+              {preferredNavMethod === "sidebar" || isMobile ? (
                 <SidebarProvider>
                   <AppSidebar />
                   {isMobile && <SidebarTrigger className="absolute z-50 m-1" />}
