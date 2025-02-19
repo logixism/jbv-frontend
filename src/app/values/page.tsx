@@ -153,7 +153,7 @@ export default function ValueList() {
             optionsActions.set("sortBy", value);
           }}
         >
-          <SelectTrigger>
+          <SelectTrigger className="w-full lg:w-32">
             <SelectValue />
           </SelectTrigger>
           <Button
