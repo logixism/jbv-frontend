@@ -186,10 +186,10 @@ export default function ValueList() {
         )}
       </div>
 
-      <Collapsible className="mt-2" open={filterOpen}>
+      <Collapsible className="my-2" open={filterOpen}>
         <CollapsibleContent>
-          <div className="flex flex-row border border-zinc-800 rounded-lg p-3 w-full h-24 lg:flex-row">
-            <div className="grid grid-cols-2">
+          <div className="flex flex-row border border-zinc-800 rounded-lg p-3 w-full h-24 lg:flex-row **:!text-xs md:**:!text-sm">
+            <div className="grid grid-cols-2 w-fit">
               {Object.values(categories).map((category) => (
                 <div
                   className="flex w-fit flex-row items-center space-x-2"
@@ -207,7 +207,7 @@ export default function ValueList() {
               ))}
             </div>
             <Separator className="mx-4" orientation="vertical" />
-            <div className="grid grid-cols-1">
+            <div className="grid grid-cols-1 w-fit">
               {["dupes", "cleans"].map((option) => (
                 <div
                   className="flex flex-row items-center space-x-2"
