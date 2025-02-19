@@ -42,7 +42,7 @@ export function Navbar() {
               {/* Main site nav */}
               <NavigationMenu className="mx-4 space-x-2">
                 <NavigationMenuList>
-                  {navigation.map((group) => (
+                  {navigation.mainNav.map((group) => (
                     <NavigationMenuItem key={group.title}>
                       <NavigationMenuTrigger className="!bg-transparent">
                         {group.title}
@@ -69,24 +69,16 @@ export function Navbar() {
 
             <div className="flex">
               {/* Left nav (theme switcher, ctrl+k finder) */}
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() =>
-                  window.open("https://x.com/jailbreakvalues", "_blank")
-                }
-              >
-                <FaTwitter />
-              </Button>
-              <Button
-                onClick={() =>
-                  window.open("https://discord.gg/jbvalues", "_blank")
-                }
-                variant="ghost"
-                size="icon"
-              >
-                <FaDiscord />
-              </Button>
+              {navigation.socials.map((social) => (
+                <Button
+                  key={social.url}
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => window.open(social.url, "_blank")}
+                >
+                  {<social.icon />}
+                </Button>
+              ))}
               <Separator className="mx-1" orientation="vertical" />
               <Button
                 onClick={() =>

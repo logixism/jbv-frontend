@@ -3,7 +3,13 @@
 import { ImageWithFallback } from "@/components/image-with-fallback";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -13,10 +19,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 import { categories, getCategoryFromId, getItemsAsArray } from "@/lib/utils";
+import { Collapsible } from "@radix-ui/react-collapsible";
+import { ArrowDown, ArrowUp, ChevronsUpDown } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaArrowDown } from "react-icons/fa";
+import { useMap } from "usehooks-ts";
 
 function isDuped(id: string) {
   return id.includes("duped");
@@ -63,27 +73,62 @@ type Items = {
 
 export default function ValueList() {
   const [items, setItems] = useState<Items>([]);
-
+  const [visibleItems, setVisibleItems] = useState<React.JSX.Element[]>([]);
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("");
-  const [order, setOrder] = useState("Descending");
-  const [hideDupes, setHideDupes] = useState<
-    "ShowBoth" | "ShowOnlyLegit" | "ShowOnlyDuped"
-  >("ShowBoth");
-  const [visibleItems, setVisibleItems] = useState<Items>([]);
+  const [filterOpen, setFilterOpen] = useState(false);
+
+  const [options, optionsActions] = useMap<string, boolean | string>([
+    ["dupes", true],
+    ["cleans", true],
+    ["sortOrder", "desc"],
+    ["sortBy", "value"],
+    ...(Object.values(categories).map((category) => [category, true]) as [
+      string,
+      boolean
+    ][]),
+  ]);
 
   useEffect(() => {
-    setVisibleItems(
-      items.filter(
-        (item) =>
-          item.name.toLowerCase().includes(search.toLowerCase()) &&
-          (category === "All categories" || item.id.startsWith(category)) &&
-          (hideDupes === "ShowBoth" ||
-            (hideDupes === "ShowOnlyLegit" && !isDuped(item.id)) ||
-            (hideDupes === "ShowOnlyDuped" && isDuped(item.id)))
-      )
+    let filteredItems = items.filter(
+      (item) =>
+        item.name.toLowerCase().includes(search.toLowerCase()) &&
+        (options.get("dupes") || !isDuped(item.id)) &&
+        (options.get("cleans") || isDuped(item.id)) &&
+        options.get(getCategoryFromId(item.id))
     );
-  }, [items, search, category, order, hideDupes]);
+
+    if (options.get("sortBy") === "category") {
+      filteredItems = filteredItems.sort((a, b) => {
+        return a.value - b.value;
+      });
+    }
+
+    let sortedItems = filteredItems.sort((a, b) => {
+      switch (options.get("sortBy")) {
+        case "value":
+          return a.value - b.value;
+        case "name":
+          return a.name.localeCompare(b.name);
+        case "category":
+          return getCategoryFromId(a.id).localeCompare(getCategoryFromId(b.id));
+        default:
+          return 0;
+      }
+    });
+
+    if (options.get("sortOrder") === "desc") {
+      sortedItems = sortedItems.reverse();
+    }
+
+    setVisibleItems(
+      sortedItems.map((item) => (
+        <Item
+          key={item.id}
+          data={{ id: item.id, name: item.name, value: item.value }}
+        />
+      ))
+    );
+  }, [items, options, search]);
 
   useEffect(() => {
     getItemsAsArray().then((items) => {
@@ -93,69 +138,39 @@ export default function ValueList() {
 
   return (
     <div>
-      <div className="flex flex-col lg:flex-row justify-between items-center w-full mb-4 lg:space-x-4">
-        <Select defaultValue="All categories" onValueChange={setCategory}>
-          <SelectTrigger className="w-full lg:w-[200px]">
-            <SelectValue placeholder="Select a category" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Category</SelectLabel>
-              <SelectItem key="all" value="All categories">
-                All categories
-              </SelectItem>
-              {Object.entries(categories).map(([key, value]) => (
-                <SelectItem key={key} value={key}>
-                  {value}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-
-        <Select defaultValue="Descending" onValueChange={setOrder}>
-          <SelectTrigger className="w-full lg:w-[200px]">
-            <SelectValue placeholder="Select a category" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Sorting order</SelectLabel>
-              <SelectItem key="value_desc" value="Descending">
-                By value desc.
-              </SelectItem>
-              <SelectItem key="value_asc" value="Ascending">
-                By value asc.
-              </SelectItem>
-              <SelectItem key="alphabetical" value="Alphabetical">
-                By alphabet
-              </SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+      <div className="flex flex-row items-center w-full space-x-2">
+        <Button variant="outline" onClick={() => setFilterOpen(!filterOpen)}>
+          <ChevronsUpDown className="h-4 w-4" />
+          Filters
+        </Button>
 
         <Select
-          defaultValue={hideDupes}
-          onValueChange={(value) =>
-            setHideDupes(
-              value as "ShowBoth" | "ShowOnlyLegit" | "ShowOnlyDuped"
-            )
-          }
+          defaultValue={options.get("sortBy") as string}
+          onValueChange={(value) => {
+            optionsActions.set("sortBy", value);
+          }}
         >
-          <SelectTrigger className="w-full lg:w-[260px]">
-            <SelectValue placeholder="Select a category" />
+          <SelectTrigger className="w-32">
+            <SelectValue />
           </SelectTrigger>
+          <Button
+            variant="outline"
+            className="w-9"
+            onClick={() => {
+              optionsActions.set(
+                "sortOrder",
+                options.get("sortOrder") === "asc" ? "desc" : "asc"
+              );
+            }}
+          >
+            {options.get("sortOrder") === "asc" ? <ArrowUp /> : <ArrowDown />}
+          </Button>
           <SelectContent>
             <SelectGroup>
-              <SelectLabel>Sorting order</SelectLabel>
-              <SelectItem key="dupes_both" value="ShowBoth">
-                Show legit & duped
-              </SelectItem>
-              <SelectItem key="dupes_legit" value="ShowOnlyLegit">
-                Show only legit
-              </SelectItem>
-              <SelectItem key="dupes_dupes" value="ShowOnlyDuped">
-                Show only duped
-              </SelectItem>
+              <SelectLabel>Sort by</SelectLabel>
+              <SelectItem value="category">Category</SelectItem>
+              <SelectItem value="name">Name</SelectItem>
+              <SelectItem value="value">Value</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
@@ -166,26 +181,50 @@ export default function ValueList() {
         />
       </div>
 
-      <div className="grid gap-8 grid-cols-[repeat(auto-fit,minmax(18rem,1fr))]">
-        {visibleItems
-          .sort((a, b) => {
-            switch (order) {
-              case "Descending":
-                return b.value - a.value;
-              case "Ascending":
-                return a.value - b.value;
-              case "Alphabetical":
-                return a.name.localeCompare(b.name);
-              default:
-                return 0;
-            }
-          })
-          .map((item) => (
-            <Item
-              key={item.id}
-              data={{ id: item.id, name: item.name, value: item.value }}
-            />
-          ))}
+      <Collapsible className="mt-2" open={filterOpen}>
+        <CollapsibleContent>
+          <div className="flex flex-row border border-zinc-800 rounded-lg p-3 w-full h-24 lg:flex-row">
+            <div className="grid grid-cols-2">
+              {Object.values(categories).map((category) => (
+                <div
+                  className="flex w-fit flex-row items-center space-x-2"
+                  key={category}
+                >
+                  <Checkbox
+                    defaultChecked={options.get(category) as boolean}
+                    onCheckedChange={(checked) =>
+                      optionsActions.set(category, checked as boolean)
+                    }
+                    id={category}
+                  />
+                  <Label htmlFor={category}>{category}</Label>
+                </div>
+              ))}
+            </div>
+            <Separator className="mx-4" orientation="vertical" />
+            <div className="grid grid-cols-1">
+              {["dupes", "cleans"].map((option) => (
+                <div
+                  className="flex flex-row items-center space-x-2"
+                  key={option}
+                >
+                  <Checkbox
+                    defaultChecked={options.get(option) as boolean}
+                    onCheckedChange={(checked) =>
+                      optionsActions.set(option, checked as boolean)
+                    }
+                    id={option}
+                  />
+                  <Label htmlFor={option}>Show {option}</Label>
+                </div>
+              ))}
+            </div>
+          </div>
+        </CollapsibleContent>
+      </Collapsible>
+
+      <div className="w-full mt-4 grid gap-8 grid-cols-[repeat(auto-fit,minmax(18rem,1fr))]">
+        {visibleItems}
       </div>
     </div>
   );

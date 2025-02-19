@@ -65,8 +65,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent className="flex items-center justify-center space-y-8">
-        {navigation.map((item) => (
+      <SidebarContent className="flex items-center justify-center space-y-6">
+        {navigation.mainNav.map((item) => (
           <div key={item.title} className="w-full text-center">
             <h2 className="font-bold text-xl">{item.title}</h2>
             <ul className="w-full space-y-2 mt-2 flex flex-col justify-center items-center">
@@ -87,6 +87,21 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             </ul>
           </div>
         ))}
+        <div className="w-full text-center">
+          <h2 className="font-bold text-xl">Socials</h2>
+          <ul className="w-full space-y-2 mt-2 flex flex-col justify-center items-center">
+            {navigation.socials.map((social) => (
+              <li key={social.url}>
+                <Button variant={"outline"} className="justify-between" asChild>
+                  <Link className="w-48 rounded-lg pr-2" href={social.url}>
+                    {social.name}
+                    {<social.icon className="mr-2" />}
+                  </Link>
+                </Button>
+              </li>
+            ))}
+          </ul>
+        </div>
       </SidebarContent>
       <SidebarFooter>
         <div className="flex justify-between w-full">

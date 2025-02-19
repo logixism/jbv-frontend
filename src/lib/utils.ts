@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
+import { url } from "inspector";
 import {
   Calculator,
   Copy,
@@ -9,6 +10,7 @@ import {
   Repeat,
   Users,
 } from "lucide-react";
+import { FaDiscord, FaTwitter } from "react-icons/fa";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -38,7 +40,7 @@ export function generateChartData(
 
 export const categories = {
   s: "Spoiler",
-  t: "Tire",
+  t: "Texture",
   r: "Rim",
   v: "Vehicle",
   c: "Color",
@@ -82,70 +84,84 @@ export async function getItemsAsArray(includeDupes = true) {
   return array;
 }
 
-export const navigation = [
-  {
-    title: "Main",
-    items: [
-      {
-        icon: Home,
-        title: "Home",
-        description:
-          "The main page of the website, with information about the website and its features",
-        url: "/",
-      },
-      {
-        icon: HelpCircle,
-        title: "FAQ",
-        description:
-          "Answers to frequently asked questions about the website and its features",
-        url: "/faq",
-      },
-    ],
-  },
-  {
-    title: "Values",
-    items: [
-      {
-        icon: Globe,
-        title: "List",
-        description: "A list of all items and their values",
-        url: "/values",
-      },
-      {
-        icon: Calculator,
-        title: "Calculator",
-        description: "A tool for calculating the value of items",
-        url: "/tools/calculator",
-      },
-      {
-        icon: Users,
-        title: "Team",
-        description: "The team behind the JBV Values",
-        url: "/values/team",
-      },
-      {
-        icon: Repeat,
-        title: "Recent Changes",
-        description: "A list of our recent value changes",
-        url: "/values/changes",
-      },
-    ],
-  },
-  {
-    title: "Other",
-    items: [
-      {
-        icon: Lock,
-        title: "Private Servers",
-        description: "Free JBV-sponsored private servers",
-        url: "/other/private_servers",
-      },
-      {
-        icon: Copy,
-        title: "Dupe List",
-        description: "A list of duped items",
-        url: "/other/dupe_list",
-      },
-    ],
-  },
-];
+export const navigation = {
+  mainNav: [
+    {
+      title: "Main",
+      items: [
+        {
+          icon: Home,
+          title: "Home",
+          description:
+            "The main page of the website, with information about the website and its features",
+          url: "/",
+        },
+        {
+          icon: HelpCircle,
+          title: "FAQ",
+          description:
+            "Answers to frequently asked questions about the website and its features",
+          url: "/faq",
+        },
+      ],
+    },
+    {
+      title: "Values",
+      items: [
+        {
+          icon: Globe,
+          title: "List",
+          description: "A list of all items and their values",
+          url: "/values",
+        },
+        {
+          icon: Calculator,
+          title: "Calculator",
+          description: "A tool for calculating the value of items",
+          url: "/tools/calculator",
+        },
+        {
+          icon: Users,
+          title: "Team",
+          description: "The team behind the JBV Values",
+          url: "/values/team",
+        },
+        {
+          icon: Repeat,
+          title: "Recent Changes",
+          description: "A list of our recent value changes",
+          url: "/values/changes",
+        },
+      ],
+    },
+    {
+      title: "Other",
+      items: [
+        {
+          icon: Lock,
+          title: "Private Servers",
+          description: "Free JBV-sponsored private servers",
+          url: "/other/private_servers",
+        },
+        {
+          icon: Copy,
+          title: "Dupe List",
+          description: "A list of duped items",
+          url: "/other/dupe_list",
+        },
+      ],
+    },
+  ],
+  socials: [
+    {
+      name: "Discord",
+      icon: FaDiscord,
+      url: "https://discord.com/invite/jbvalues",
+    },
+    {
+      name: "Twitter",
+      icon: FaTwitter,
+      url: "https://twitter.com/jbvalues",
+    },
+  ],
+};
