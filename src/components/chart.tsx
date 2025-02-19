@@ -4,30 +4,31 @@ import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { useTheme } from "next-themes";
 import { useState } from "react";
+import { Button } from "./ui/button";
 
 export type ChartData = { date: string; value: number }[];
 
+const ranges = {
+  "1W": 7,
+  "1M": 30,
+  "3M": 90,
+  "1Y": 365,
+  ALL: Infinity,
+};
+
 export default function Chart({ chartData }: { chartData: ChartData }) {
   const { theme } = useTheme();
-  const [timeRange, setTimeRange] = useState<'1W' | '1M' | '3M' | '1Y' | 'ALL' > ('3M');
+  const [timeRange, setTimeRange] = useState<keyof typeof ranges>("3M");
 
   const filterDataByRange = (data: ChartData) => {
-    const ranges = {
-      '1W': 7,
-      '1M': 30,
-      '3M': 90,
-      '1Y': 365,
-      'ALL': Infinity
-    };
-
     const daysToShow = ranges[timeRange];
-    
+
     const cutoffDate = new Date();
     cutoffDate.setDate(cutoffDate.getDate() - daysToShow);
-    
-    return data.filter(point => {
+
+    return data.filter((point) => {
       const pointDate = new Date(point.date);
-      return pointDate >= cutoffDate || timeRange === 'ALL';
+      return pointDate >= cutoffDate || timeRange === "ALL";
     });
   };
 
@@ -35,6 +36,7 @@ export default function Chart({ chartData }: { chartData: ChartData }) {
 
   const options: Highcharts.Options = {
     chart: {
+      height: 250,
       backgroundColor: "transparent",
       style: {
         fontFamily: "Montserrat, sans-serif",
@@ -49,7 +51,7 @@ export default function Chart({ chartData }: { chartData: ChartData }) {
       text: "",
     },
     xAxis: {
-      categories: filteredData.map(point => point.date),
+      categories: filteredData.map((point) => point.date),
       labels: {
         style: {
           color: theme === "dark" ? "#d4d4d4" : "#3f3f46",
@@ -79,22 +81,22 @@ export default function Chart({ chartData }: { chartData: ChartData }) {
     },
     legend: {
       itemStyle: {
-        color: "white",
+        color: theme === "dark" ? "#FAFAFA" : "#09090B",
       },
     },
     series: [
       {
         type: "spline",
         name: "Value",
-        data: filteredData.map(point => point.value),
-        color: "white",
+        data: filteredData.map((point) => point.value),
+        color: theme === "dark" ? "#FAFAFA" : "#09090B",
         marker: {
           enabled: false,
         },
       },
     ],
     tooltip: {
-      backgroundColor: theme === "dark" ? "black" : "white",
+      backgroundColor: theme === "dark" ? "#151517" : "#F4F4F5",
       style: {
         color: theme === "dark" ? "#FFFFFF" : "#000000",
       },
@@ -110,18 +112,14 @@ export default function Chart({ chartData }: { chartData: ChartData }) {
   return (
     <div className="w-full h-full">
       <div className="flex gap-2 mb-4 justify-end">
-        {(['1W', '1M', '3M', '1Y', 'ALL'] as const).map((range) => (
-          <button
+        {Object.keys(ranges).map((range) => (
+          <Button
+            variant={range === timeRange ? "default" : "outline"}
             key={range}
-            onClick={() => setTimeRange(range)}
-            className={`px-3 py-1 rounded text-sm ${
-              timeRange === range
-                ? 'bg-zinc-900 text-white'
-                : 'bg-zinc-100 text-zinc-800 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700'
-            }`}
+            onClick={() => setTimeRange(range as keyof typeof ranges)}
           >
             {range}
-          </button>
+          </Button>
         ))}
       </div>
       <HighchartsReact highcharts={Highcharts} options={options} />

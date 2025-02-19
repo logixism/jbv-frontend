@@ -23,7 +23,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-
 const SettingsDialog = ({
   trigger,
   ...props
@@ -32,10 +31,33 @@ const SettingsDialog = ({
 }) => {
   const [open, setOpen] = useState(false);
 
-  const [selectedNavMethod, setSelectedNavMethod, _] = useLocalStorage(
-    "selectedNavMethod",
-    "sidebar"
-  );
+  const [preferredNavMethod, setPreferredNavMethod, _removePreferredNavMethod] =
+    useLocalStorage("preferredNavMethod", "sidebar");
+
+  const [preferredFont, setPreferredFont, _removePreferredFont] =
+    useLocalStorage("preferredFont", "Montserrat");
+
+  const settings = {
+    preferredNavMethod: {
+      label: "Preferred navigation method",
+      value: preferredNavMethod,
+      onChange: setPreferredNavMethod,
+      options: [
+        { value: "sidebar", label: "Sidebar" },
+        { value: "navbar", label: "Topbar" },
+      ],
+    },
+    preferredFont: {
+      label: "Preferred font",
+      value: preferredFont,
+      onChange: setPreferredFont,
+      options: [
+        { value: "Montserrat", label: "Montserrat" },
+        { value: "Arial", label: "Arial" },
+        { value: "Times New Roman", label: "Times New Roman" },
+      ],
+    },
+  };
 
   return (
     <Dialog {...props} open={open} onOpenChange={setOpen}>
@@ -44,24 +66,29 @@ const SettingsDialog = ({
         <DialogHeader>
           <DialogTitle>Settings</DialogTitle>
         </DialogHeader>
-        <div>
-          <div className="flex items-center justify-between">
-            <p>Preferred navigation method</p>
-            <Select
-              defaultValue={selectedNavMethod}
-              onValueChange={setSelectedNavMethod}
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Sidebar" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value="sidebar">Sidebar</SelectItem>
-                  <SelectItem value="navbar">Topbar</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
+        <div className="space-y-4">
+          {Object.entries(settings).map(([key, values]) => (
+            <div key={key} className="flex items-center justify-between">
+              <p>{values.label}</p>
+              <Select
+                defaultValue={values.value}
+                onValueChange={values.onChange}
+              >
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder={values.options[0].label} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {values.options.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+          ))}
         </div>
         <DialogFooter className="flex justify-end">
           <Button onClick={() => setOpen(false)} variant="outline">

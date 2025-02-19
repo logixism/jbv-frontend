@@ -1,13 +1,21 @@
 import {
+  Calculator,
   Calendar,
   ChevronRight,
   CogIcon,
+  Copy,
+  Globe,
+  HelpCircle,
+  HelpCircleIcon,
   Home,
   Inbox,
+  Lock,
   Moon,
+  Repeat,
   Search,
   Settings,
   Sun,
+  Users,
 } from "lucide-react";
 
 import {
@@ -37,22 +45,41 @@ import SettingsDialog from "./settings-dialog";
 const data = {
   navMain: [
     {
+      title: "Main",
+      items: [
+        {
+          icon: Home,
+          title: "Home",
+          url: "/",
+        },
+        {
+          icon: HelpCircle,
+          title: "FAQ",
+          url: "/faq",
+        },
+      ],
+    },
+    {
       title: "Values",
       items: [
         {
-          title: "Value list",
+          icon: Globe,
+          title: "List",
           url: "/values",
         },
         {
-          title: "Value calculator",
+          icon: Calculator,
+          title: "Calculator",
           url: "/tools/calculator",
         },
         {
-          title: "Value team",
+          icon: Users,
+          title: "Team",
           url: "/values/team",
         },
         {
-          title: "Recent changes",
+          icon: Repeat,
+          title: "Recent Changes",
           url: "/values/changes",
         },
       ],
@@ -61,11 +88,13 @@ const data = {
       title: "Other",
       items: [
         {
+          icon: Lock,
           title: "Private Servers",
           url: "/other/private_servers",
         },
         {
-          title: "Dupe list",
+          icon: Copy,
+          title: "Dupe List",
           url: "/other/dupe_list",
         },
       ],
@@ -77,56 +106,44 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { setTheme } = useTheme();
 
   return (
-    <Sidebar {...props}>
+    <Sidebar variant="floating" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <Link href="/">
+            <Link href="/" className="w-full justify-center items-center">
               {/* we can put the long-form logo here, i've asked popman for it & he said after revamp's done */}
               <Image
                 src="/logo.png"
-                width={512}
-                height={512}
+                width={2048}
+                height={2048}
                 alt="logo"
-                className="object-contain w-8 h-8 ml-2"
+                className="h-24 object-contain"
               />
             </Link>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent className="gap-0">
+      <SidebarContent className="flex items-center justify-center space-y-8">
         {data.navMain.map((item) => (
-          <Collapsible
-            key={item.title}
-            title={item.title}
-            defaultOpen
-            className="group/collapsible"
-          >
-            <SidebarGroup>
-              <SidebarGroupLabel
-                asChild
-                className="group/label text-sm text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-              >
-                <CollapsibleTrigger>
-                  {item.title}
-                  <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
-                </CollapsibleTrigger>
-              </SidebarGroupLabel>
-              <CollapsibleContent>
-                <SidebarGroupContent>
-                  <SidebarMenu>
-                    {item.items.map((item) => (
-                      <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton asChild>
-                          <a href={item.url}>{item.title}</a>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    ))}
-                  </SidebarMenu>
-                </SidebarGroupContent>
-              </CollapsibleContent>
-            </SidebarGroup>
-          </Collapsible>
+          <div key={item.title} className="w-full text-center">
+            <h2 className="font-bold text-xl">{item.title}</h2>
+            <ul className="w-full space-y-2 mt-2 flex flex-col justify-center items-center">
+              {item.items.map((item) => (
+                <li key={item.title}>
+                  <Button
+                    variant={"outline"}
+                    className="justify-between"
+                    asChild
+                  >
+                    <Link className="w-48 rounded-lg pr-2" href={item.url}>
+                      {item.title}
+                      {item.icon && <item.icon className="mr-2" />}
+                    </Link>
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          </div>
         ))}
       </SidebarContent>
       <SidebarFooter>
@@ -156,7 +173,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           />
         </div>
       </SidebarFooter>
-      <SidebarRail className="border-r border-zinc-800" />
     </Sidebar>
   );
 }

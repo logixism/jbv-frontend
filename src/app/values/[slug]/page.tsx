@@ -83,7 +83,7 @@ export default async function Item({
   )) as ItemSubmission[];
 
   return (
-    <div className="flex justify-center">
+    <div className="flex items-center justify-center h-full">
       <div className="flex flex-col text-center justify-center items-center max-w-150">
         <Image
           className="h-80 object-contain"
