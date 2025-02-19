@@ -216,7 +216,10 @@ function Calculator() {
             .toLocaleString()}
         </p>
         <Button
-          disabled={selectedItems.length === 0}
+          disabled={
+            selectedItems.length === 0 ||
+            selectedItems.every((item) => item.quantity === 0)
+          }
           onClick={() => {
             setSelectedItems([]);
           }}
