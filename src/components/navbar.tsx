@@ -11,7 +11,7 @@ import {
 } from "./ui/navigation-menu";
 import Link from "next/link";
 import React from "react";
-import { cn } from "@/lib/utils";
+import { cn, navigation } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { FaDiscord, FaTwitter } from "react-icons/fa";
 import { MdLightMode, MdDarkMode } from "react-icons/md";
@@ -42,43 +42,27 @@ export function Navbar() {
               {/* Main site nav */}
               <NavigationMenu className="mx-4 space-x-2">
                 <NavigationMenuList>
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger className="!bg-transparent">
-                      Values
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                        <ListItem href="/values" title="Value list">
-                          The home for our values
-                        </ListItem>
-                        <ListItem href="/values/team" title="Value team">
-                          Our amazing team behind JBValues and their own lists
-                        </ListItem>
-                        <ListItem href="/values/recent" title="Recent changes">
-                          Recently changed values
-                        </ListItem>
-                        <ListItem href="/tools/calculator" title="Calculator">
-                          Calculate your inventory value easily
-                        </ListItem>
-                      </ul>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger className="!bg-transparent">
-                      Other
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                        <ListItem href="/tools/calc" title="Dupe list">
-                          A list to check if your items are duped
-                        </ListItem>
-                        <ListItem href="/tools/recent" title="VIP Servers">
-                          JBV-sponsored VIP servers
-                        </ListItem>
-                      </ul>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
+                  {navigation.map((group) => (
+                    <NavigationMenuItem key={group.title}>
+                      <NavigationMenuTrigger className="!bg-transparent">
+                        {group.title}
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent>
+                        <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+                          {group.items.map((item) => (
+                            <ListItem
+                              key={item.url}
+                              href={item.url}
+                              icon={<item.icon />}
+                              title={item.title}
+                            >
+                              {item.description}
+                            </ListItem>
+                          ))}
+                        </ul>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
+                  ))}
                 </NavigationMenuList>
               </NavigationMenu>
             </div>
@@ -134,8 +118,8 @@ export function Navbar() {
 
 const ListItem = React.forwardRef<
   React.ComponentRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
+  React.ComponentPropsWithoutRef<"a"> & { icon?: React.ReactNode }
+>(({ className, title, children, icon = null, ...props }, ref) => {
   return (
     <li>
       <NavigationMenuLink asChild>
@@ -147,6 +131,7 @@ const ListItem = React.forwardRef<
           )}
           {...props}
         >
+          {icon && <div className="mb-2">{icon}</div>}
           <div className="text-sm font-medium leading-none">{title}</div>
           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
             {children}

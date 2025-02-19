@@ -23,6 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { useIsMobile } from "@/hooks/use-mobile";
 const SettingsDialog = ({
   trigger,
   ...props
@@ -39,6 +40,7 @@ const SettingsDialog = ({
 
   const settings = {
     preferredNavMethod: {
+      visibleOnMobile: false,
       label: "Preferred navigation method",
       value: preferredNavMethod,
       onChange: setPreferredNavMethod,
@@ -48,6 +50,7 @@ const SettingsDialog = ({
       ],
     },
     preferredFont: {
+      visibleOnMobile: true,
       label: "Preferred font",
       value: preferredFont,
       onChange: setPreferredFont,
@@ -59,6 +62,8 @@ const SettingsDialog = ({
     },
   };
 
+  const isMobile = useIsMobile();
+
   return (
     <Dialog {...props} open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
@@ -68,7 +73,13 @@ const SettingsDialog = ({
         </DialogHeader>
         <div className="space-y-4">
           {Object.entries(settings).map(([key, values]) => (
-            <div key={key} className="flex items-center justify-between">
+            <div
+              key={key}
+              className="flex items-center justify-between"
+              style={{
+                display: isMobile && !values.visibleOnMobile ? "none" : "flex",
+              }}
+            >
               <p>{values.label}</p>
               <Select
                 defaultValue={values.value}

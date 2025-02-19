@@ -1,4 +1,14 @@
 import { clsx, type ClassValue } from "clsx";
+import {
+  Calculator,
+  Copy,
+  Globe,
+  HelpCircle,
+  Home,
+  Lock,
+  Repeat,
+  Users,
+} from "lucide-react";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -71,3 +81,71 @@ export async function getItemsAsArray(includeDupes = true) {
 
   return array;
 }
+
+export const navigation = [
+  {
+    title: "Main",
+    items: [
+      {
+        icon: Home,
+        title: "Home",
+        description:
+          "The main page of the website, with information about the website and its features",
+        url: "/",
+      },
+      {
+        icon: HelpCircle,
+        title: "FAQ",
+        description:
+          "Answers to frequently asked questions about the website and its features",
+        url: "/faq",
+      },
+    ],
+  },
+  {
+    title: "Values",
+    items: [
+      {
+        icon: Globe,
+        title: "List",
+        description: "A list of all items and their values",
+        url: "/values",
+      },
+      {
+        icon: Calculator,
+        title: "Calculator",
+        description: "A tool for calculating the value of items",
+        url: "/tools/calculator",
+      },
+      {
+        icon: Users,
+        title: "Team",
+        description: "The team behind the JBV Values",
+        url: "/values/team",
+      },
+      {
+        icon: Repeat,
+        title: "Recent Changes",
+        description: "A list of our recent value changes",
+        url: "/values/changes",
+      },
+    ],
+  },
+  {
+    title: "Other",
+    items: [
+      {
+        icon: Lock,
+        title: "Private Servers",
+        description: "Free JBV-sponsored private servers",
+        url: "/other/private_servers",
+      },
+      {
+        icon: Copy,
+        title: "Dupe List",
+        description: "A list of duped items",
+        url: "/other/dupe_list",
+      },
+    ],
+  },
+];

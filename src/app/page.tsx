@@ -82,6 +82,7 @@ export default function Home() {
   return (
     <div>
       <AlertDialog open={unofficialWarningOpen}>
+        <AlertDialogTitle />
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Warning</AlertDialogTitle>

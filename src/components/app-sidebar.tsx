@@ -30,6 +30,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
+  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import {
   Collapsible,
@@ -41,66 +42,7 @@ import Image from "next/image";
 import { Button } from "./ui/button";
 import { useTheme } from "next-themes";
 import SettingsDialog from "./settings-dialog";
-
-const data = {
-  navMain: [
-    {
-      title: "Main",
-      items: [
-        {
-          icon: Home,
-          title: "Home",
-          url: "/",
-        },
-        {
-          icon: HelpCircle,
-          title: "FAQ",
-          url: "/faq",
-        },
-      ],
-    },
-    {
-      title: "Values",
-      items: [
-        {
-          icon: Globe,
-          title: "List",
-          url: "/values",
-        },
-        {
-          icon: Calculator,
-          title: "Calculator",
-          url: "/tools/calculator",
-        },
-        {
-          icon: Users,
-          title: "Team",
-          url: "/values/team",
-        },
-        {
-          icon: Repeat,
-          title: "Recent Changes",
-          url: "/values/changes",
-        },
-      ],
-    },
-    {
-      title: "Other",
-      items: [
-        {
-          icon: Lock,
-          title: "Private Servers",
-          url: "/other/private_servers",
-        },
-        {
-          icon: Copy,
-          title: "Dupe List",
-          url: "/other/dupe_list",
-        },
-      ],
-    },
-  ],
-};
+import { navigation } from "@/lib/utils";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { setTheme } = useTheme();
@@ -124,7 +66,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent className="flex items-center justify-center space-y-8">
-        {data.navMain.map((item) => (
+        {navigation.map((item) => (
           <div key={item.title} className="w-full text-center">
             <h2 className="font-bold text-xl">{item.title}</h2>
             <ul className="w-full space-y-2 mt-2 flex flex-col justify-center items-center">

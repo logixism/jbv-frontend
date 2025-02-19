@@ -12,6 +12,7 @@ import "./globals.css";
 import { AppSidebar } from "@/components/app-sidebar";
 import { useLocalStorage } from "usehooks-ts";
 import { useEffect, useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -34,8 +35,13 @@ export default function RootLayout({
 
   const [isClient, setIsClient] = useState(false);
 
+  const isMobile = useIsMobile();
+
   useEffect(() => {
     setIsClient(true);
+  }, []);
+
+  useEffect(() => {
     document.documentElement.style.fontFamily = preferredFont;
   }, [preferredFont]);
 
@@ -48,6 +54,7 @@ export default function RootLayout({
               {preferredNavMethod === "sidebar" ? (
                 <SidebarProvider>
                   <AppSidebar />
+                  {isMobile && <SidebarTrigger className="absolute z-50 m-1" />}
                   <SidebarInset className="min-h-screen min-w-screen md:min-w-0 p-8">
                     {children}
                   </SidebarInset>
