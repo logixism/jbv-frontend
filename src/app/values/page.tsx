@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { categories, getCategoryFromId, getItemsAsArray } from "@/lib/utils";
 import { Collapsible } from "@radix-ui/react-collapsible";
 import { ArrowDown, ArrowUp, ChevronsUpDown } from "lucide-react";
@@ -72,6 +73,8 @@ type Items = {
 }[];
 
 export default function ValueList() {
+  const isMobile = useIsMobile();
+
   const [items, setItems] = useState<Items>([]);
   const [visibleItems, setVisibleItems] = useState<React.JSX.Element[]>([]);
   const [search, setSearch] = useState("");
@@ -150,7 +153,7 @@ export default function ValueList() {
             optionsActions.set("sortBy", value);
           }}
         >
-          <SelectTrigger className="w-32">
+          <SelectTrigger>
             <SelectValue />
           </SelectTrigger>
           <Button
@@ -175,10 +178,12 @@ export default function ValueList() {
           </SelectContent>
         </Select>
 
-        <Input
-          placeholder="Search"
-          onInput={(e) => setSearch(e.currentTarget.value)}
-        />
+        {!isMobile && (
+          <Input
+            placeholder="Search"
+            onInput={(e) => setSearch(e.currentTarget.value)}
+          />
+        )}
       </div>
 
       <Collapsible className="mt-2" open={filterOpen}>
@@ -222,6 +227,13 @@ export default function ValueList() {
           </div>
         </CollapsibleContent>
       </Collapsible>
+
+      {isMobile && (
+        <Input
+          placeholder="Search"
+          onInput={(e) => setSearch(e.currentTarget.value)}
+        />
+      )}
 
       <div className="w-full mt-4 grid gap-8 grid-cols-[repeat(auto-fit,minmax(18rem,1fr))]">
         {visibleItems}
