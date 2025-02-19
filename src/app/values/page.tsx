@@ -81,7 +81,7 @@ export default function ValueList() {
     ["dupes", true],
     ["cleans", true],
     ["sortOrder", "desc"],
-    ["sortBy", "value"],
+    ["sortBy", "category"],
     ...(Object.values(categories).map((category) => [category, true]) as [
       string,
       boolean
