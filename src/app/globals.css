@@ -22,9 +22,11 @@
 
 @layer base {
   :root {
+    @apply bg-zinc-50;
     --chart-1: #000;
   }
   .dark {
+    @apply bg-zinc-950;
     --chart-1: #fff;
   }
 }
