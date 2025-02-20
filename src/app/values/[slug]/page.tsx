@@ -1,5 +1,5 @@
 import Image from "next/image";
-
+import ThreeCanvas from "./canvas";
 import { Line, LineChart } from "recharts";
 import Chart from "@/components/chart";
 import { generateChartData, getCategoryFromId } from "@/lib/utils";
@@ -85,13 +85,14 @@ export default async function Item({
   return (
     <div className="flex items-center justify-center h-full">
       <div className="flex flex-col text-center justify-center items-center max-w-150">
-        <Image
+        {/* <Image
           className="h-80 object-contain"
           src={`https://jbvalues.com/images/itemimages/${itemId}.webp`}
           width={1024}
           height={1024}
           alt={itemData.name}
-        />
+        /> */}
+        <ThreeCanvas />
 
         <div className="mt-4 text-left w-full">
           <div className="flex flex-row">
