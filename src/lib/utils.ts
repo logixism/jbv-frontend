@@ -23,7 +23,7 @@ export function generateChartData(
       [date: string]: number;
     };
   },
-  overMonths: number = 100
+  overMonths: number = 1000
 ) {
   const now = new Date();
   const sixMonthsAgo = new Date(now.setMonth(now.getMonth() - overMonths));

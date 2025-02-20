@@ -109,7 +109,7 @@ export default function Chart({
         color: theme === "dark" ? "#FFFFFF" : "#000000",
       },
       shared: true,
-      headerFormat: "<b>{point.x}</b><br/>",
+      headerFormat: "<b>{point.key}</b><br/>",
       pointFormat: "{series.name}: ${point.y:,.0f}",
     },
     credits: {
