@@ -20,22 +20,28 @@ export default function ThreeCanvas() {
   }, [yRotation, setYRotation]);
 
   return (
-    <div className="h-55 w-full">
-        <Canvas
-          camera={{
-            fov: 40,
-            position: [0, -45, 225],
-            up: [0, 1, 0],
-          }}
-        >
-          <OrbitControls />
-          <hemisphereLight intensity={3} />
-          <pointLight position={[0, 100, 10]} intensity={100} decay={0.4} />
-          <pointLight position={[0, 50, 50]} intensity={5} decay={1} />
-          <mesh rotation={[0.5, yRotation, 0]}>
-            <primitive object={model} />
-          </mesh>
-        </Canvas>
-    </div>
+    <Canvas
+      camera={{
+        fov: 40,
+        position: [0, -45, 225],
+        up: [0, 1, 0],
+      }}
+      >
+      <OrbitControls 
+        minPolarAngle={1.35}
+        maxPolarAngle={1.35}
+      />
+      <ambientLight color={"#FFFFFF"} />
+      <pointLight position={[0, 100, 10]} intensity={25} decay={0.5} />
+      <pointLight position={[0, 50, 50]} intensity={5} decay={1} />
+      <hemisphereLight
+        color={"#00AAFF"}
+        groundColor={"#FFAA00"}
+        intensity={6}
+      />
+      <mesh rotation={[0, yRotation, 0]}>
+        <primitive object={model} />
+      </mesh>
+    </Canvas>
   );
 }
