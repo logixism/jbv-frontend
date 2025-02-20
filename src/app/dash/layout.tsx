@@ -141,7 +141,7 @@ export default function DashLayout({
           <SidebarFooter className="mt-4">
             <Button
               onClick={() => {
-                window.location.href = "/dash";
+                window.location.href = "/";
               }}
             >
               Return to JBValues
