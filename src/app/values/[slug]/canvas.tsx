@@ -19,16 +19,16 @@ export default function ThreeCanvas() {
   }, [yRotation, setYRotation]);
 
   return (
-    <div className="h-55">
+    <div className="h-55 w-full">
         <Canvas
           camera={{
-            fov: 45,
-            position: [0, -45, 185],
+            fov: 40,
+            position: [0, -45, 225],
             up: [0, 1, 0],
           }}
         >
-          <pointLight position={[0, 50, -50]} intensity={10} decay={0.5} />
-          <pointLight position={[0, 50, 150]} intensity={10} decay={0.5} />
+          <pointLight position={[0, 100, 10]} intensity={100} decay={0.4} />
+          <pointLight position={[0, 50, 50]} intensity={5} decay={1} />
           <mesh rotation={[0.5, yRotation, 0]}>
             <primitive object={model} />
           </mesh>
