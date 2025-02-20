@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 export default function ThreeCanvas() {
   const model = useLoader(FBXLoader, "/protov2.fbx");
 
-  const [yRotation, setYRotation] = useState(0);
+  const [yRotation, setYRotation] = useState(1.75);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -31,6 +31,7 @@ export default function ThreeCanvas() {
       <OrbitControls 
         minPolarAngle={1.35}
         maxPolarAngle={1.35}
+        enableZoom={false}
       />
       <ambientLight color={"#FFFFFF"} />
 
