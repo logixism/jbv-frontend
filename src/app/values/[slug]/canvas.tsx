@@ -6,29 +6,40 @@ import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { useEffect, useState } from "react";
+import { useInterval } from "usehooks-ts";
 
 export default function ThreeCanvas() {
   const model = useLoader(FBXLoader, "/protov2.fbx");
 
   const [yRotation, setYRotation] = useState(1.75);
+  const [timeSinceMovedManually, setTimeSinceMovedManually] = useState(999);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setYRotation((yRotation + 0.0005) % (Math.PI * 2));
-    }, 1);
-    return () => clearInterval(interval);
-  }, [yRotation, setYRotation]);
+  useInterval(() => {
+    setTimeSinceMovedManually(timeSinceMovedManually + 1);
+  }, 1000);
+
+  useInterval(() => {
+    if (timeSinceMovedManually > 3) {
+      setYRotation((yRotation + 0.001) % (Math.PI * 2));
+    }
+  }, 10);
 
   return (
     <Canvas
+      gl={{
+        antialias: true,
+      }}
       camera={{
         fov: 40,
         position: [0, -45, 0],
         up: [0, 1, 0],
-        zoom: 3
+        zoom: 3,
       }}
-      >
-      <OrbitControls 
+    >
+      <OrbitControls
+        onChange={() => {
+          setTimeSinceMovedManually(0);
+        }}
         minPolarAngle={1.35}
         maxPolarAngle={1.35}
         enableZoom={false}
