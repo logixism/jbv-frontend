@@ -203,6 +203,7 @@ export default function ValueList() {
 
         {!isMobile && (
           <Input
+            className="border-zinc-800"
             placeholder="Search"
             onInput={(e) => setSearch(e.currentTarget.value)}
           />
@@ -255,12 +256,13 @@ export default function ValueList() {
 
       {isMobile && (
         <Input
+          className="border-zinc-800"
           placeholder="Search"
           onInput={(e) => setSearch(e.currentTarget.value)}
         />
       )}
 
-      <div className="w-full mt-8 grid gap-8 grid-cols-[repeat(auto-fit,minmax(18rem,1fr))]">
+      <div className="w-full max-w-[95%] mx-auto mt-8 grid gap-8 grid-cols-[repeat(auto-fit,minmax(18rem,1fr))]">
         {visibleItems}
       </div>
     </div>
