@@ -33,6 +33,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ImageWithFallback } from "@/components/image-with-fallback";
 import SettingsDialog from "@/components/settings-dialog";
+import { Montserrat } from "next/font/google";
 
 const navigation = [
   {
@@ -107,52 +108,50 @@ const navigation = [
   },
 ];
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function DashLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en">
-      <body className="antialiased">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="text-zinc-950 dark:text-zinc-200 bg-zinc-50 dark:bg-zinc-950">
-            <SidebarProvider>
-              <Sidebar variant="floating">
-                <SidebarContent>
-                  {navigation.map((navGroup, index) => (
-                    <SidebarGroup key={index}>
-                      <SidebarGroupLabel>{navGroup.title}</SidebarGroupLabel>
-                      <SidebarGroupContent>
-                        <SidebarMenu>
-                          {navGroup.items.map((item, itemIndex) => (
-                            <SidebarMenuItem key={itemIndex}>
-                              <SidebarMenuButton asChild>
-                                <Link href={item.href}>
-                                  {<item.icon />}
-                                  {item.title}
-                                </Link>
-                              </SidebarMenuButton>
-                            </SidebarMenuItem>
-                          ))}
-                        </SidebarMenu>
-                      </SidebarGroupContent>
-                    </SidebarGroup>
-                  ))}
-                </SidebarContent>
-                <SidebarFooter className="mt-4">
-                  <Button
-                    onClick={() => {
-                      window.location.href = "/dash";
-                    }}
-                  >
-                    Return to JBValues
-                  </Button>
-                </SidebarFooter>
-              </Sidebar>
-              <SidebarInset className="min-h-screen min-w-screen md:min-w-0 p-8">
-                {children}
-              </SidebarInset>
-            </SidebarProvider>
-          </div>
-        </ThemeProvider>
-      </body>
-    </html>
+    <div className="text-zinc-950 dark:text-zinc-200 bg-zinc-50 dark:bg-zinc-950">
+      <SidebarProvider>
+        <Sidebar variant="inset">
+          <SidebarContent>
+            {navigation.map((navGroup, index) => (
+              <SidebarGroup key={index}>
+                <SidebarGroupLabel>{navGroup.title}</SidebarGroupLabel>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {navGroup.items.map((item, itemIndex) => (
+                      <SidebarMenuItem key={itemIndex}>
+                        <SidebarMenuButton asChild>
+                          <Link href={item.href}>
+                            {<item.icon />}
+                            {item.title}
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
+            ))}
+          </SidebarContent>
+          <SidebarFooter className="mt-4">
+            <Button
+              onClick={() => {
+                window.location.href = "/dash";
+              }}
+            >
+              Return to JBValues
+            </Button>
+          </SidebarFooter>
+        </Sidebar>
+        <SidebarInset className="min-h-screen min-w-screen md:min-w-0 p-8">
+          {children}
+        </SidebarInset>
+      </SidebarProvider>
+    </div>
   );
 }

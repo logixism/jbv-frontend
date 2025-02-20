@@ -36,11 +36,13 @@ export default function RootLayout({
   ] = useLocalStorage("preferredNavMethod", "sidebar");
 
   const [isClient, setIsClient] = useState(false);
+  const [isDash, setIsDash] = useState(false);
 
   const isMobile = useIsMobile();
 
   useEffect(() => {
     setIsClient(true);
+    setIsDash(window.location.href.includes("/dash"));
   }, []);
 
   useEffect(() => {
@@ -54,7 +56,7 @@ export default function RootLayout({
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             {/* <BGParticles /> */}
 
-            {preferredNavMethod === "sidebar" || isMobile ? (
+            {(preferredNavMethod === "sidebar" || isMobile) && !isDash ? (
               <SidebarProvider>
                 <AppSidebar />
                 {isMobile && <SidebarTrigger className="absolute z-50 m-1" />}
