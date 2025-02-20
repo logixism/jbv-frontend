@@ -39,10 +39,10 @@ export function generateChartData(
 }
 
 export const categories = {
-  s: "Spoiler",
-  t: "Texture",
-  r: "Rim",
   v: "Vehicle",
+  s: "Spoiler",
+  r: "Rim",
+  t: "Texture",
   c: "Color",
   hyper: "Hyperchrome",
 };

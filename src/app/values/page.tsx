@@ -28,6 +28,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { FaArrowDown } from "react-icons/fa";
 import { useMap } from "usehooks-ts";
+import { Slider } from "@/components/ui/slider";
 
 function isDuped(id: string) {
   return id.includes("duped");
@@ -115,6 +116,8 @@ export default function ValueList() {
   const [visibleItems, setVisibleItems] = useState<React.JSX.Element[]>([]);
   const [search, setSearch] = useState("");
   const [filterOpen, setFilterOpen] = useState(false);
+  const [valueRange, setValueRange] = useState<[number, number]>([0, Infinity]);
+  const [activeSection, setActiveSection] = useState("All");
 
   const [options, optionsActions] = useMap<string, boolean | string>([
     ["dupes", true],
@@ -133,7 +136,10 @@ export default function ValueList() {
         item.name.toLowerCase().includes(search.toLowerCase()) &&
         (options.get("dupes") || !isDuped(item.id)) &&
         (options.get("cleans") || isDuped(item.id)) &&
-        options.get(getCategoryFromId(item.id))
+        options.get(getCategoryFromId(item.id)) &&
+        item.value >= valueRange[0] &&
+        item.value <= valueRange[1] &&
+        (activeSection === "All" || getCategoryFromId(item.id) === activeSection)
     );
 
     if (options.get("sortBy") === "category") {
@@ -172,18 +178,39 @@ export default function ValueList() {
         />
       ))
     );
-  }, [items, options, search]);
+  }, [items, options, search, valueRange, activeSection]);
 
   useEffect(() => {
     getItemsAsArray().then((items) => {
       setItems(items);
+      const highestValue = Math.max(...items.map(item => item.value));
+      setValueRange([0, highestValue]);
     });
   }, []);
 
   return (
     <div>
+      <div className={`flex flex-row gap-2 overflow-x-auto justify-center ${isMobile ? "w-full" : "w-2/3"} mx-auto mb-4`}>
+        <Button
+          key="all"
+          variant={activeSection === "All" ? "secondary" : "outline"}
+          onClick={() => setActiveSection("All")}
+        >
+          All
+        </Button>
+        {Object.values(categories).map((category) => (
+          <Button
+            key={category}
+            variant={activeSection === category ? "secondary" : "outline"}
+            onClick={() => setActiveSection(category)}
+          >
+            {category}s
+          </Button>
+        ))}
+      </div>
+
       <div
-        className={`flex flex-row items-center space-x-2 ${
+        className={`flex flex-row items-center space-x-2 justify-center ${
           isMobile ? "w-full" : "w-2/3"
         } mx-auto`}
       >
@@ -198,7 +225,7 @@ export default function ValueList() {
             optionsActions.set("sortBy", value);
           }}
         >
-          <SelectTrigger className="w-full lg:w-32">
+          <SelectTrigger className="w-full lg:w-32 gap-1">
             <SelectValue />
           </SelectTrigger>
           <Button
@@ -225,7 +252,7 @@ export default function ValueList() {
 
         {!isMobile && (
           <Input
-            className="border-zinc-800"
+            className="border-zinc-800 max-w-125"
             placeholder="Search"
             onInput={(e) => setSearch(e.currentTarget.value)}
           />
@@ -237,7 +264,7 @@ export default function ValueList() {
         open={filterOpen}
       >
         <CollapsibleContent>
-          <div className="flex flex-row border border-zinc-800 rounded-lg p-3 w-full h-24 lg:flex-row">
+          <div className="flex flex-row border border-zinc-800 rounded-lg p-3 w-max mx-auto h-28 lg:flex-row">
             <div className="grid grid-cols-2">
               {Object.values(categories).map((category) => (
                 <div
@@ -274,6 +301,32 @@ export default function ValueList() {
                   <Label htmlFor={option}>Show {option}</Label>
                 </div>
               ))}
+            </div>
+            <Separator className="mx-4" orientation="vertical" />
+            <div className="flex flex-col justify-center w-64 gap-2">
+              <div>
+              <Label className="mb-2 block">Min Value <span className="mt-1 text-sm text-zinc-500">(${valueRange[0].toLocaleString()})</span></Label>
+                <Slider
+                  min={0}
+                  max={Math.max(...items.map(item => item.value)) * 0.7}
+                  step={100000}
+                  value={[valueRange[0]]}
+                  onValueChange={(value) => setValueRange([value[0], valueRange[1]])}
+                  className="relative"
+                />
+              </div>
+
+              <div>
+                <Label className="mb-2 block">Max Value <span className="mt-1 text-sm text-zinc-500">(${valueRange[1].toLocaleString()})</span></Label>
+                <Slider
+                  min={0}
+                  max={Math.max(...items.map(item => item.value))}
+                  step={100000}
+                  value={[valueRange[1]]}
+                  onValueChange={(value) => setValueRange([valueRange[0], value[0]])}
+                  className="relative"
+                />
+              </div>
             </div>
           </div>
         </CollapsibleContent>
