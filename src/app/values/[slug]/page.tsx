@@ -92,7 +92,7 @@ export default async function Item({
           height={1024}
           alt={itemData.name}
         /> */}
-        <div className="h-55 w-max">
+        <div className="h-55 w-full">
           <ThreeCanvas />
         </div>
 
