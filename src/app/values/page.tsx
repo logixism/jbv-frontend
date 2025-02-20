@@ -141,7 +141,7 @@ export default function ValueList() {
 
   return (
     <div>
-      <div className="flex flex-row items-center space-x-2 w-2/3 mx-auto"> 
+      <div className={`flex flex-row items-center space-x-2 ${isMobile ? "w-full" : "w-2/3"} mx-auto`}> 
         <Button variant="outline" onClick={() => setFilterOpen(!filterOpen)}>
           <ChevronsUpDown className="h-4 w-4" />
           Filters
@@ -186,7 +186,7 @@ export default function ValueList() {
         )}
       </div>
 
-      <Collapsible className="my-2 w-2/3 mx-auto" open={filterOpen}> 
+      <Collapsible className={`my-2 ${isMobile ? "w-full" : "w-2/3"} mx-auto`} open={filterOpen}> 
         <CollapsibleContent>
           <div className="flex flex-row border border-zinc-800 rounded-lg p-3 w-full h-24 lg:flex-row">
             <div className="grid grid-cols-2">
