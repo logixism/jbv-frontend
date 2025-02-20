@@ -218,8 +218,6 @@ export async function generateMetadata({
     title: `JBValues - ${itemData.name}`,
     description: itemData.description,
     openGraph: {
-      title: `JBValues - ${itemData.name}`,
-      description: itemData.description,
       images: [
         {
           url: `https://jbvalues.com/images/itemimages/${itemId}.webp`,
