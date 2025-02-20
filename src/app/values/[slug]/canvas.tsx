@@ -6,7 +6,7 @@ import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { useEffect, useState } from "react";
-import { useInterval } from "usehooks-ts";
+import { useCountdown, useInterval } from "usehooks-ts";
 
 export default function ThreeCanvas() {
   const model = useLoader(FBXLoader, "/protov2.fbx");
@@ -14,11 +14,23 @@ export default function ThreeCanvas() {
   const [yRotation, setYRotation] = useState(1.75);
   const [timeSinceMovedManually, setTimeSinceMovedManually] = useState(999);
 
+  const [count, { startCountdown, stopCountdown, resetCountdown }] =
+    useCountdown({
+      countStart: 1.5,
+      countStop: 0,
+      intervalMs: 500,
+    });
+
+  useEffect(() => {
+    startCountdown();
+  });
+
   useInterval(() => {
     setTimeSinceMovedManually(timeSinceMovedManually + 1);
   }, 1000);
 
   useInterval(() => {
+    console.log(timeSinceMovedManually);
     if (timeSinceMovedManually > 3) {
       setYRotation((yRotation + 0.001) % (Math.PI * 2));
     }
@@ -38,7 +50,9 @@ export default function ThreeCanvas() {
     >
       <OrbitControls
         onChange={() => {
-          setTimeSinceMovedManually(0);
+          if (count === 0) {
+            setTimeSinceMovedManually(0);
+          }
         }}
         minPolarAngle={1.35}
         maxPolarAngle={1.35}

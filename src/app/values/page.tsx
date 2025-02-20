@@ -47,11 +47,10 @@ function Item(props: {
         <div className="flex justify-between items-start">
           <span className="text-sm">{getCategoryFromId(props.data.id)}</span>
           <span className="text-xs text-zinc-500 flex items-center gap-1">
-            <Clock size={11} />
-            2 days ago
+            <Clock size={11} />2 days ago
           </span>
         </div>
-        
+
         <div className="flex flex-row justify-between items-center space-x-4">
           <h4 className="text-lg font-semibold">{props.data.name}</h4>
           {isDuped(props.data.id) && <Badge variant="destructive">Duped</Badge>}
@@ -68,14 +67,28 @@ function Item(props: {
         <div className="flex flex-row justify-between">
           <p>Rarity</p>
           <p className="font-bold">
-            {["Extremely Rare", "Rare", "Uncommon", "Common", "Very Common"][Math.floor(Math.random() * 5)]}
+            {
+              ["Extremely Rare", "Rare", "Uncommon", "Common", "Very Common"][
+                Math.floor(Math.random() * 5)
+              ]
+            }
           </p>
         </div>
 
         <div className="flex flex-row justify-between">
           <p>Demand</p>
           <p className="font-bold">
-            {["Excellent", "High", "Above Average", "Average", "Low", "Minimal", "Nonexistent"][Math.floor(Math.random() * 7)]}
+            {
+              [
+                "Excellent",
+                "High",
+                "Above Average",
+                "Average",
+                "Low",
+                "Minimal",
+                "Nonexistent",
+              ][Math.floor(Math.random() * 7)]
+            }
           </p>
         </div>
 
@@ -150,7 +163,12 @@ export default function ValueList() {
       sortedItems.map((item) => (
         <Item
           key={item.id}
-          data={{ id: item.id, name: item.name, value: item.value }}
+          data={{
+            id: item.id,
+            name: item.name,
+            value: item.value,
+            demand: item.demand,
+          }}
         />
       ))
     );
@@ -164,7 +182,11 @@ export default function ValueList() {
 
   return (
     <div>
-      <div className={`flex flex-row items-center space-x-2 ${isMobile ? "w-full" : "w-2/3"} mx-auto`}> 
+      <div
+        className={`flex flex-row items-center space-x-2 ${
+          isMobile ? "w-full" : "w-2/3"
+        } mx-auto`}
+      >
         <Button variant="outline" onClick={() => setFilterOpen(!filterOpen)}>
           <ChevronsUpDown className="h-4 w-4" />
           Filters
@@ -210,7 +232,10 @@ export default function ValueList() {
         )}
       </div>
 
-      <Collapsible className={`my-2 ${isMobile ? "w-full" : "w-2/3"} mx-auto`} open={filterOpen}> 
+      <Collapsible
+        className={`my-2 ${isMobile ? "w-full" : "w-2/3"} mx-auto`}
+        open={filterOpen}
+      >
         <CollapsibleContent>
           <div className="flex flex-row border border-zinc-800 rounded-lg p-3 w-full h-24 lg:flex-row">
             <div className="grid grid-cols-2">
