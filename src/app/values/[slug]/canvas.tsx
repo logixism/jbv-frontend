@@ -4,6 +4,7 @@ import * as THREE from "three";
 import { useFrame, useLoader } from "@react-three/fiber";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 import { Canvas } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
 import { useEffect, useState } from "react";
 
 export default function ThreeCanvas() {
@@ -27,6 +28,8 @@ export default function ThreeCanvas() {
             up: [0, 1, 0],
           }}
         >
+          <OrbitControls />
+          <hemisphereLight intensity={3} />
           <pointLight position={[0, 100, 10]} intensity={100} decay={0.4} />
           <pointLight position={[0, 50, 50]} intensity={5} decay={1} />
           <mesh rotation={[0.5, yRotation, 0]}>
