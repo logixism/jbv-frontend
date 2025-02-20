@@ -26,6 +26,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ImageWithFallback } from "@/components/image-with-fallback";
 import { Separator } from "@/components/ui/separator";
+import { Metadata } from "next";
 
 export type Item = {
   id: string;
@@ -203,4 +204,27 @@ export default async function Item({
       </div>
     </div>
   );
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const itemId = params.slug;
+  const itemData = (await getItemData(itemId)) as Item;
+
+  return {
+    title: `JBValues - ${itemData.name}`,
+    description: itemData.description,
+    openGraph: {
+      title: `JBValues - ${itemData.name}`,
+      description: itemData.description,
+      images: [
+        {
+          url: `https://jbvalues.com/images/itemimages/${itemId}.webp`,
+        },
+      ],
+    },
+  } as Metadata;
 }
