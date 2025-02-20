@@ -49,15 +49,26 @@ const SettingsDialog = ({
         { value: "navbar", label: "Topbar" },
       ],
     },
-    preferredFont: {
+    // preferredFont: {
+    //   visibleOnMobile: true,
+    //   label: "Preferred font",
+    //   value: preferredFont,
+    //   onChange: setPreferredFont,
+    //   options: [
+    //     { value: "Montserrat", label: "Montserrat" },
+    //     { value: "Arial", label: "Arial" },
+    //     { value: "Times New Roman", label: "Times New Roman" },
+    //   ],
+    // },
+    preferredTheme: {
       visibleOnMobile: true,
-      label: "Preferred font",
-      value: preferredFont,
-      onChange: setPreferredFont,
+      label: "Preferred theme",
+      value: useTheme().resolvedTheme,
+      onChange: useTheme().setTheme,
       options: [
-        { value: "Montserrat", label: "Montserrat" },
-        { value: "Arial", label: "Arial" },
-        { value: "Times New Roman", label: "Times New Roman" },
+        { value: "light", label: "Light" },
+        { value: "dark", label: "Dark" },
+        { value: "system", label: "System" },
       ],
     },
   };

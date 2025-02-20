@@ -13,7 +13,6 @@ export default function ThreeCanvas() {
 
   const [yRotation, setYRotation] = useState(1.75);
   const [timeSinceMovedManually, setTimeSinceMovedManually] = useState(999);
-
   const [count, { startCountdown, stopCountdown, resetCountdown }] =
     useCountdown({
       countStart: 1.5,
@@ -30,7 +29,6 @@ export default function ThreeCanvas() {
   }, 1000);
 
   useInterval(() => {
-    console.log(timeSinceMovedManually);
     if (timeSinceMovedManually > 3) {
       setYRotation((yRotation + 0.001) % (Math.PI * 2));
     }
