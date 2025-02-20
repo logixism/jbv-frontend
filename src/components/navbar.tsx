@@ -29,7 +29,7 @@ export function Navbar() {
         <div className="flex w-full justify-between px-8 h-12">
           <Link href="/">
             <Image
-              className="w-12 h-12"
+              className="w-12 h-12 object-contain"
               src={"/logo.webp"}
               width={256}
               height={256}
