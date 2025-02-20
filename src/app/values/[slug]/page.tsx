@@ -209,9 +209,9 @@ export default async function Item({
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const itemId = params.slug;
+  const itemId = (await params).slug;
   const itemData = (await getItemData(itemId)) as Item;
 
   return {
