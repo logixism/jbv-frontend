@@ -43,6 +43,8 @@ import { Button } from "./ui/button";
 import { useTheme } from "next-themes";
 import SettingsDialog from "./settings-dialog";
 import { navigation } from "@/lib/utils";
+import { ImageWithFallback } from "./image-with-fallback";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { setTheme } = useTheme();
@@ -100,11 +102,27 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </ul>
         </div>
       </SidebarContent>
-      <SidebarFooter>
-        <div className="flex justify-between w-full">
+      <SidebarFooter className="mt-4">
+        <div className="flex justify-between flex-row w-full">
+          <Button
+            onClick={() => {
+              window.location.href = "/dash";
+            }}
+            variant={"outline"}
+            className="flex flex-row p-0 flex-1 overflow-hidden"
+          >
+            <ImageWithFallback
+              src="/seal.png"
+              fallbackSrc="/fallback.png"
+              className="h-full w-fit object-contain self-start"
+              width={256}
+              height={256}
+            />
+            <div className="flex-1 text-center">Dashboard</div>
+          </Button>
           <SettingsDialog
             trigger={
-              <Button variant={"ghost"} size={"icon"}>
+              <Button size={"icon"} variant={"outline"} className="ml-2 w-9">
                 <div className="flex items-center justify-center transition duration-1000 hover:rotate-360 w-full h-full">
                   <Settings />
                 </div>

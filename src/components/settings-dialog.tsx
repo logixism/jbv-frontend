@@ -68,7 +68,6 @@ const SettingsDialog = ({
       options: [
         { value: "light", label: "Light" },
         { value: "dark", label: "Dark" },
-        { value: "system", label: "System" },
       ],
     },
   };
@@ -78,7 +77,7 @@ const SettingsDialog = ({
   return (
     <Dialog {...props} open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="w-[500px]">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Settings</DialogTitle>
         </DialogHeader>
