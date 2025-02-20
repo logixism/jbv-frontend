@@ -48,24 +48,24 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { setTheme } = useTheme();
 
   return (
-    <Sidebar variant="floating" {...props}>
+    <Sidebar className="max-h-screen" variant="inset" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <Link href="/" className="w-full justify-center items-center">
+            <Link href="/" className="w-full justify-center items-center m-6">
               {/* we can put the long-form logo here, i've asked popman for it & he said after revamp's done */}
               <Image
-                src="/logo.png"
+                src="/logo.webp"
                 width={2048}
                 height={2048}
                 alt="logo"
-                className="h-24 object-contain"
+                className="h-13 object-contain"
               />
             </Link>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent className="flex items-center justify-center space-y-6">
+      <SidebarContent className="flex items-center justify-center space-y-6 flex-none shrink">
         {navigation.mainNav.map((item) => (
           <div key={item.title} className="w-full text-center">
             <h2 className="font-bold text-xl">{item.title}</h2>
@@ -89,13 +89,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         ))}
         <div className="w-full text-center">
           <h2 className="font-bold text-xl">Socials</h2>
-          <ul className="w-full space-y-2 mt-2 flex flex-col justify-center items-center">
+          <ul className="w-full mt-2 flex justify-center items-center gap-2">
             {navigation.socials.map((social) => (
               <li key={social.url}>
-                <Button variant={"outline"} className="justify-between" asChild>
-                  <Link className="w-48 rounded-lg pr-2" href={social.url}>
-                    {social.name}
-                    {<social.icon className="mr-2" />}
+                <Button className="w-min" variant={"outline"} asChild>
+                  <Link href={social.url}>
+                    {<social.icon />}
                   </Link>
                 </Button>
               </li>
