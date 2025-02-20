@@ -24,10 +24,12 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { generateChartData } from "@/lib/utils";
+import { TriangleAlert } from "lucide-react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Line, LineChart } from "recharts";
+import { useLocalStorage } from "usehooks-ts";
 
 type TorpedoData = {
   valuehistory: {
@@ -60,7 +62,10 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export default function Home() {
-  const [unofficialWarningOpen, setUnofficialWarningOpen] = useState(true);
+  const [unofficialWarningOpen, setUnofficialWarningOpen] = useLocalStorage(
+    "unofficialWarningOpen",
+    true
+  );
 
   const [torpedoData, setTorpedoData] = useState<TorpedoData>();
   const [chartData, setChartData] = useState<ChartData>();
@@ -86,11 +91,14 @@ export default function Home() {
         <AlertDialogTitle />
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Warning</AlertDialogTitle>
+            <AlertDialogTitle className="flex flex-row items-center">
+              <TriangleAlert />
+              <p className="ml-2">Warning</p>
+            </AlertDialogTitle>
             <AlertDialogDescription>
-              This website is a work-in-progress <b>fan-made</b> website for
-              JBValues. If you stumbled upon here accidentally, you probably
-              meant to go to the official one.
+              Looks like you&apos;ve found the new website for JBValues. This is
+              still a work-in-progress, so we recommend going to the official
+              one for the time being.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

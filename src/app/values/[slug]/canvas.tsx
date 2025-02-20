@@ -29,7 +29,6 @@ export default function ThreeCanvas({ file }: { file: string }) {
   }, 1000);
 
   useInterval(() => {
-    console.log(timeSinceMovedManually, count);
     if (timeSinceMovedManually > 3) {
       setYRotation((yRotation + 0.001) % (Math.PI * 2));
     }
