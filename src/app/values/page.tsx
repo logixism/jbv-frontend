@@ -75,7 +75,7 @@ export default function ValueList() {
   const [items, setItems] = useState<Items>([]);
   const [visibleItems, setVisibleItems] = useState<React.JSX.Element[]>([]);
   const [search, setSearch] = useState("");
-  const [filterOpen, setFilterOpen] = useState(false);
+  const [filterOpen, setFilterOpen] = useState(true);
 
   const [options, optionsActions] = useMap<string, boolean | string>([
     ["dupes", true],
@@ -138,7 +138,7 @@ export default function ValueList() {
 
   return (
     <div>
-      <div className="flex flex-row items-center w-full space-x-2">
+      <div className="flex flex-row items-center space-x-2 w-2/3">
         <Button variant="outline" onClick={() => setFilterOpen(!filterOpen)}>
           <ChevronsUpDown className="h-4 w-4" />
           Filters
@@ -183,7 +183,7 @@ export default function ValueList() {
 
       <Collapsible className="mt-2" open={filterOpen}>
         <CollapsibleContent>
-          <div className="flex flex-row border border-zinc-800 rounded-lg p-3 w-full h-24 lg:flex-row">
+          <div className="flex flex-row border border-zinc-800 rounded-lg p-3 w-2/3 h-24 lg:flex-row">
             <div className="grid grid-cols-2">
               {Object.values(categories).map((category) => (
                 <div
@@ -196,6 +196,7 @@ export default function ValueList() {
                       optionsActions.set(category, checked as boolean)
                     }
                     id={category}
+                    className="!bg-transparent !text-white"
                   />
                   <Label htmlFor={category}>{category}</Label>
                 </div>
@@ -214,6 +215,7 @@ export default function ValueList() {
                       optionsActions.set(option, checked as boolean)
                     }
                     id={option}
+                    className="!bg-transparent !text-white"
                   />
                   <Label htmlFor={option}>Show {option}</Label>
                 </div>
