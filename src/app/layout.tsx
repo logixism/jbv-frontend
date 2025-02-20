@@ -52,7 +52,7 @@ export default function RootLayout({
       <body className={`${montserrat.variable} antialiased`}>
         {isClient && (
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <BGParticles />
+            {/* <BGParticles /> */}
 
             {preferredNavMethod === "sidebar" || isMobile ? (
               <SidebarProvider>
