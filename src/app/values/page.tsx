@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { categories, getCategoryFromId, getItemsAsArray } from "@/lib/utils";
 import { Collapsible } from "@radix-ui/react-collapsible";
 import { ArrowDown, ArrowUp, ChevronsUpDown } from "lucide-react";
@@ -72,6 +73,8 @@ type Items = {
 }[];
 
 export default function ValueList() {
+  const isMobile = useIsMobile();
+
   const [items, setItems] = useState<Items>([]);
   const [visibleItems, setVisibleItems] = useState<React.JSX.Element[]>([]);
   const [search, setSearch] = useState("");
@@ -150,7 +153,7 @@ export default function ValueList() {
             optionsActions.set("sortBy", value);
           }}
         >
-          <SelectTrigger className="w-32">
+          <SelectTrigger className="w-full lg:w-32">
             <SelectValue />
           </SelectTrigger>
           <Button
@@ -175,13 +178,15 @@ export default function ValueList() {
           </SelectContent>
         </Select>
 
-        <Input
-          placeholder="Search"
-          onInput={(e) => setSearch(e.currentTarget.value)}
-        />
+        {!isMobile && (
+          <Input
+            placeholder="Search"
+            onInput={(e) => setSearch(e.currentTarget.value)}
+          />
+        )}
       </div>
 
-      <Collapsible className="mt-2" open={filterOpen}>
+      <Collapsible className="my-2" open={filterOpen}>
         <CollapsibleContent>
           <div className="flex flex-row border border-zinc-800 rounded-lg p-3 w-2/3 h-24 lg:flex-row">
             <div className="grid grid-cols-2">
@@ -203,7 +208,7 @@ export default function ValueList() {
               ))}
             </div>
             <Separator className="mx-4" orientation="vertical" />
-            <div className="grid grid-cols-1">
+            <div className="grid grid-cols-1 w-fit">
               {["dupes", "cleans"].map((option) => (
                 <div
                   className="flex flex-row items-center space-x-2"
@@ -224,6 +229,13 @@ export default function ValueList() {
           </div>
         </CollapsibleContent>
       </Collapsible>
+
+      {isMobile && (
+        <Input
+          placeholder="Search"
+          onInput={(e) => setSearch(e.currentTarget.value)}
+        />
+      )}
 
       <div className="w-full mt-4 grid gap-8 grid-cols-[repeat(auto-fit,minmax(18rem,1fr))]">
         {visibleItems}
