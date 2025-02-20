@@ -44,7 +44,7 @@ function CalculatorEntry({
         width={1024}
         height={1024}
         src={`https://jbvalues.com/images/itemimages/${item.id}.webp`}
-        fallbackSrc="/logo.png"
+        fallbackSrc="/logo.webp"
       />
       <Separator orientation="vertical" className="mx-1" />
       <div className="flex flex-row items-center ml-2 w-full">
@@ -185,7 +185,7 @@ function Calculator() {
                       className="max-w-8 max-h-8 object-contain"
                       width={256}
                       height={256}
-                      fallbackSrc="/logo.png"
+                      fallbackSrc="/logo.webp"
                       src={`https://jbvalues.com/images/itemimages/${item.id}.webp`}
                     />
                     {item.name}

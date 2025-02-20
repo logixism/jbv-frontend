@@ -61,7 +61,7 @@ function Item(props: {
           width={1024}
           height={1024}
           src={`https://jbvalues.com/images/itemimages/${props.data.id}.webp`}
-          fallbackSrc="/logo.png"
+          fallbackSrc="/logo.webp"
           alt={`an image of ${props.data.name}`}
         />
         <div className="flex flex-row justify-between">

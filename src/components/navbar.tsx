@@ -30,7 +30,7 @@ export function Navbar() {
           <Link href="/">
             <Image
               className="w-12 h-12"
-              src={"/logo.png"}
+              src={"/logo.webp"}
               width={256}
               height={256}
               alt="jbvalues logo"
