@@ -287,7 +287,7 @@ export default function ValueList() {
         />
       )}
 
-      <div className="w-full max-w-[95%] mx-auto mt-8 grid gap-8 grid-cols-[repeat(auto-fit,minmax(18rem,1fr))]">
+      <div className="w-full max-w-[2000px] mx-auto mt-8 grid gap-8 grid-cols-[repeat(auto-fit,minmax(18rem,1fr))]">
         {visibleItems}
       </div>
     </div>
