@@ -27,6 +27,7 @@ import { Button } from "@/components/ui/button";
 import { ImageWithFallback } from "@/components/image-with-fallback";
 import { Separator } from "@/components/ui/separator";
 import { Metadata } from "next";
+import ModelOrImage from "./model-or-image";
 
 export type Item = {
   id: string;
@@ -86,16 +87,7 @@ export default async function Item({
   return (
     <div className="flex items-center justify-center h-full">
       <div className="flex flex-col text-center justify-center items-center max-w-150">
-        {/* <Image
-          className="h-80 object-contain"
-          src={`https://jbvalues.com/images/itemimages/${itemId}.webp`}
-          width={1024}
-          height={1024}
-          alt={itemData.name}
-        /> */}
-        <div className="h-64 w-full">
-          <ThreeCanvas />
-        </div>
+        <ModelOrImage id={itemId} />
 
         <div className="mt-4 text-left w-full">
           <div className="flex flex-row">

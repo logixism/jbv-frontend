@@ -8,8 +8,8 @@ import { OrbitControls } from "@react-three/drei";
 import { useEffect, useState } from "react";
 import { useCountdown, useInterval } from "usehooks-ts";
 
-export default function ThreeCanvas() {
-  const model = useLoader(FBXLoader, "/protov2.fbx");
+export default function ThreeCanvas({ file }: { file: string }) {
+  const model = useLoader(FBXLoader, file);
 
   const [yRotation, setYRotation] = useState(1.75);
   const [timeSinceMovedManually, setTimeSinceMovedManually] = useState(999);

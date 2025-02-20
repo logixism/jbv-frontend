@@ -27,7 +27,8 @@ export function Navbar() {
     <header suppressHydrationWarning className="sticky top-0 z-50 w-full">
       <div className="flex items-center justify-center dark:bg-zinc-950/60 bg-zinc-50/60 backdrop-blur-lg">
         <div className="flex w-full justify-between px-8 h-12">
-          <Link href="/">
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+          <a href="/">
             <Image
               className="w-12 h-12 object-contain"
               src={"/logo.webp"}
@@ -35,7 +36,7 @@ export function Navbar() {
               height={256}
               alt="jbvalues logo"
             />
-          </Link>
+          </a>
 
           <div className="flex items-center justify-between w-full">
             <div>
