@@ -41,17 +41,17 @@ const navigation = [
     items: [
       {
         title: "Info",
-        href: "/dash/user/info",
+        href: "/dashboard/info",
         icon: User,
       },
       {
         title: "Settings",
-        href: "/dash/user/settings",
+        href: "/dashboard/settings",
         icon: Settings2,
       },
       {
         title: "Support",
-        href: "/dash/user/support",
+        href: "/dashboard/support",
         icon: HelpCircle,
       },
       {
@@ -66,17 +66,17 @@ const navigation = [
     items: [
       {
         title: "Analytics",
-        href: "/dash/value_team/analytics",
+        href: "/dashboard/valueteam/analytics",
         icon: BarChart,
       },
       {
         title: "Editor",
-        href: "/dash/value_team/editor",
+        href: "/dashboard/valueteam/editor",
         icon: Edit,
       },
       {
         title: "Settings",
-        href: "/dash/value_team/settings",
+        href: "/dashboard/valueteam/settings",
         icon: SettingsIcon,
       },
     ],
@@ -86,12 +86,12 @@ const navigation = [
     items: [
       {
         title: "Analytics",
-        href: "/dash/reviewers/analytics",
+        href: "/dashboard/reviewers/analytics",
         icon: BarChart,
       },
       {
         title: "Submissions",
-        href: "/dash/reviewers/submissions",
+        href: "/dashboard/reviewers/submissions",
         icon: Edit,
       },
     ],
@@ -101,7 +101,7 @@ const navigation = [
     items: [
       {
         title: "Applications",
-        href: "/dash/experts/applications",
+        href: "/dashboard/experts/applications",
         icon: Edit3,
       },
     ],
@@ -140,6 +140,7 @@ export default function DashLayout({
           </SidebarContent>
           <SidebarFooter className="mt-4">
             <Button
+              variant="outline"
               onClick={() => {
                 window.location.href = "/";
               }}

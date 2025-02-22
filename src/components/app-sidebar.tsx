@@ -106,7 +106,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <div className="flex justify-between flex-row w-full">
           <Button
             onClick={() => {
-              window.location.href = "/dash";
+              window.location.href = "/dashboard/info";
             }}
             variant={"outline"}
             className="flex flex-row p-0 flex-1 overflow-hidden"
