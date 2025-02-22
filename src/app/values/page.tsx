@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   CollapsibleContent,
-  CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,10 +22,8 @@ import { Separator } from "@/components/ui/separator";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { categories, getCategoryFromId, getItemsAsArray } from "@/lib/utils";
 import { Collapsible } from "@radix-ui/react-collapsible";
-import { ArrowDown, ArrowUp, ChevronsUpDown, Clock } from "lucide-react";
-import Image from "next/image";
+import { ArrowDown, ArrowUp, ChevronsUpDown, Clock, Globe, Car, Brush, Palette, Sparkles, CircleDot, Cuboid } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { FaArrowDown } from "react-icons/fa";
 import { useMap } from "usehooks-ts";
 import { Slider } from "@/components/ui/slider";
 
@@ -190,23 +187,38 @@ export default function ValueList() {
 
   return (
     <div>
-      <div className={`flex flex-row gap-2 overflow-x-auto justify-center ${isMobile ? "w-full" : "w-2/3"} mx-auto mb-4`}>
+      <div className={`flex flex-row gap-2 justify-center mx-auto mb-4`}>
         <Button
           key="all"
           variant={activeSection === "All" ? "secondary" : "outline"}
           onClick={() => setActiveSection("All")}
+          className="gap-2"
         >
-          All
+          <Globe size={16} />
+          {!isMobile && <span>All</span>}
         </Button>
-        {Object.values(categories).map((category) => (
-          <Button
-            key={category}
-            variant={activeSection === category ? "secondary" : "outline"}
-            onClick={() => setActiveSection(category)}
-          >
-            {category}s
-          </Button>
-        ))}
+        {Object.values(categories).map((category) => {
+          const icon = {
+            Vehicle: <Car size={16} />,
+            Spoiler: <Cuboid size={16} />,
+            Rim: <CircleDot size={16} />,
+            Texture: <Brush size={16} />,
+            Color: <Palette size={16} />,
+            Hyperchrome: <Sparkles size={16} />
+          }[category];
+
+          return (
+            <Button
+              key={category}
+              variant={activeSection === category ? "secondary" : "outline"}
+              onClick={() => setActiveSection(category)}
+              className="gap-2"
+            >
+              {icon}
+              {!isMobile && <span>{category === "Hyperchrome" ? "Hypers" : `${category}s`}</span>}
+            </Button>
+          );
+        })}
       </div>
 
       <div
@@ -259,18 +271,12 @@ export default function ValueList() {
         )}
       </div>
 
-      <Collapsible
-        className={`my-2 ${isMobile ? "w-full" : "w-2/3"} mx-auto`}
-        open={filterOpen}
-      >
+      <Collapsible open={filterOpen}>
         <CollapsibleContent>
-          <div className="flex flex-row border border-zinc-800 rounded-lg p-3 w-max mx-auto h-28 lg:flex-row">
-            <div className="grid grid-cols-2">
+          <div className="my-2 flex flex-col lg:flex-row border border-zinc-800 rounded-lg p-3 w-full lg:w-max mx-auto min-h-[7rem] lg:h-28">
+            <div className="grid grid-cols-2 gap-2 mb-4 lg:mb-0">
               {Object.values(categories).map((category) => (
-                <div
-                  className="flex w-fit flex-row items-center space-x-2"
-                  key={category}
-                >
+                <div className="flex items-center space-x-2" key={category}>
                   <Checkbox
                     defaultChecked={options.get(category) as boolean}
                     onCheckedChange={(checked) =>
@@ -283,13 +289,12 @@ export default function ValueList() {
                 </div>
               ))}
             </div>
-            <Separator className="mx-4" orientation="vertical" />
-            <div className="grid grid-cols-1 w-fit">
+            
+            <Separator className="hidden lg:block mx-4" orientation="vertical" />
+            
+            <div className="grid grid-cols-2 gap-2 mb-4 lg:mb-0 lg:grid-cols-1">
               {["dupes", "cleans"].map((option) => (
-                <div
-                  className="flex flex-row items-center space-x-2"
-                  key={option}
-                >
+                <div className="flex items-center space-x-2" key={option}>
                   <Checkbox
                     defaultChecked={options.get(option) as boolean}
                     onCheckedChange={(checked) =>
@@ -302,17 +307,19 @@ export default function ValueList() {
                 </div>
               ))}
             </div>
-            <Separator className="mx-4" orientation="vertical" />
-            <div className="flex flex-col justify-center w-64 gap-2">
+            
+            <Separator className="hidden lg:block mx-4" orientation="vertical" />
+            <Separator className="lg:hidden my-4" />
+            
+            <div className="flex flex-col justify-center w-full lg:w-64 gap-2">
               <div>
-              <Label className="mb-2 block">Min Value <span className="mt-1 text-sm text-zinc-500">(${valueRange[0].toLocaleString()})</span></Label>
+                <Label className="mb-2 block">Min Value <span className="mt-1 text-sm text-zinc-500">(${valueRange[0].toLocaleString()})</span></Label>
                 <Slider
                   min={0}
                   max={Math.max(...items.map(item => item.value)) * 0.7}
                   step={100000}
                   value={[valueRange[0]]}
                   onValueChange={(value) => setValueRange([value[0], valueRange[1]])}
-                  className="relative"
                 />
               </div>
 
@@ -324,7 +331,6 @@ export default function ValueList() {
                   step={100000}
                   value={[valueRange[1]]}
                   onValueChange={(value) => setValueRange([valueRange[0], value[0]])}
-                  className="relative"
                 />
               </div>
             </div>
@@ -334,13 +340,13 @@ export default function ValueList() {
 
       {isMobile && (
         <Input
-          className="border-zinc-800"
+          className="border-zinc-800 mt-8"
           placeholder="Search"
           onInput={(e) => setSearch(e.currentTarget.value)}
         />
       )}
 
-      <div className="w-full max-w-[2000px] mx-auto mt-8 grid gap-8 grid-cols-[repeat(auto-fit,minmax(18rem,1fr))]">
+      <div className="w-full max-w-[2000px] mx-auto mt-8 grid gap-8 grid-cols-[repeat(auto-fill,minmax(18rem,1fr))]">
         {visibleItems}
       </div>
     </div>
