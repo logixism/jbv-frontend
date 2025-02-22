@@ -1,24 +1,23 @@
 import type { NextConfig } from "next";
 
-
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "jbvalues.com",
-        port: "",
-        pathname: "**",
-        search: "",
-      },
-      {
-        protocol: "https",
-        hostname: "cdn.discordapp.com",
-        port: "",
-        pathname: "**",
-        search: "",
-      },
-    ],
+    domains: ["jbvalues.com", "cdn.discordapp.com"],
+    // remotePatterns: [
+    //   {
+    //     protocol: "https",
+    //     hostname: "jbvalues.com",
+    //     port: "",
+    //     pathname: "*",
+    //   },
+    //   {
+    //     protocol: "https",
+    //     hostname: "cdn.discordapp.com",
+    //     port: "",
+    //     pathname: "**",
+    //     search: "",
+    //   },
+    // ],
   },
 };
 

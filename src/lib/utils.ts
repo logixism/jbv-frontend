@@ -56,11 +56,22 @@ export function getCategoryFromId(id: string) {
   return "Category missing";
 }
 
-type Items = {
+export type Items = {
   id: string;
   name: string;
   value: number;
   demand: string;
+}[];
+
+export type Submissions = {
+  id: string;
+  itemId: string;
+  itemName: string;
+  time: string;
+  reason: string;
+  reviewerReason: string;
+  status: string;
+  value: number;
 }[];
 
 export async function getItemsAsArray(includeDupes = true) {
