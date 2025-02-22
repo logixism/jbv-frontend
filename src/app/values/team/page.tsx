@@ -35,7 +35,7 @@ export default async function Page() {
   }
 
   return (
-    <div className="grid gap-8 grid-cols-[repeat(auto-fill,minmax(30rem,1fr))]">
+    <div className="grid gap-6 grid-cols-[repeat(auto-fill,minmax(36rem,1fr))]">
       {Object.values(lists).map(({ info, stats }) => (
         <VTCard
           key={info.customUrl}
