@@ -79,7 +79,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     className="justify-between"
                     asChild
                   >
-                    <Link className="w-48 rounded-lg pr-2" href={item.url}>
+                    <Link className="w-46 rounded-lg pr-2" href={item.url}>
                       {item.title}
                       {item.icon && <item.icon className="mr-2" />}
                     </Link>
@@ -94,7 +94,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <ul className="w-full mt-2 flex justify-center items-center gap-2">
             {navigation.socials.map((social) => (
               <li key={social.url}>
-                <Button className="w-min" variant={"outline"} asChild>
+                <Button className="min-w-10" variant={"outline"} size={"icon"} asChild>
                   <Link href={social.url}>{<social.icon />}</Link>
                 </Button>
               </li>
@@ -103,7 +103,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </div>
       </SidebarContent>
       <SidebarFooter className="mt-4">
-        <div className="flex justify-between flex-row w-full">
+        <div className="flex justify-between flex-row w-46 mx-auto">
           <Button
             onClick={() => {
               window.location.href = "/dashboard/info";
@@ -118,7 +118,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               width={256}
               height={256}
             />
-            <div className="flex-1 text-center">Dashboard</div>
+            <div className="flex-1 text-center pr-2">Dashboard</div>
           </Button>
           <SettingsDialog
             trigger={

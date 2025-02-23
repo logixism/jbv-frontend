@@ -65,6 +65,11 @@ const navigation = [
     title: "Value Team",
     items: [
       {
+        title: "Applications",
+        href: "/dashboard/experts/applications",
+        icon: Edit3,
+      },
+      {
         title: "Analytics",
         href: "/dashboard/valueteam/analytics",
         icon: BarChart,
@@ -82,6 +87,16 @@ const navigation = [
     ],
   },
   {
+    title: "Experts",
+    items: [
+      {
+        title: "Applications",
+        href: "/dashboard/experts/applications",
+        icon: Edit3,
+      },
+    ],
+  },
+  {
     title: "Reviewers",
     items: [
       {
@@ -93,16 +108,6 @@ const navigation = [
         title: "Submissions",
         href: "/dashboard/reviewers/submissions",
         icon: Edit,
-      },
-    ],
-  },
-  {
-    title: "Experts",
-    items: [
-      {
-        title: "Applications",
-        href: "/dashboard/experts/applications",
-        icon: Edit3,
       },
     ],
   },
