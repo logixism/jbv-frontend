@@ -62,6 +62,7 @@ function highlightText(text: string, highlight: string) {
 
 export default function Page() {
   const [dupes, setDupes] = useState({} as DupeData);
+  const [visibleDupes, setVisibleDupes] = useState([] as [string, string[]][]);
   const [items, setItems] = useState([] as Items);
   const [search, setSearch] = useState("");
 
@@ -73,60 +74,65 @@ export default function Page() {
     getDupeData().then(setDupes);
   }, []);
 
+  useEffect(() => {
+    const filteredDupes = Object.entries(dupes).filter(
+      ([_, usernames]) =>
+        search.length < 3 ||
+        usernames.some((u) => u.toLowerCase().includes(search.toLowerCase()))
+    );
+
+    setVisibleDupes(filteredDupes);
+  }, [search, dupes]);
+
   return (
     <div>
       <Input placeholder="Search" onChange={(e) => setSearch(e.target.value)} />
       <div className="grid gap-4 grid-cols-1 mt-4">
-        {Object.entries(dupes)
-          .filter(
-            ([_, usernames]) =>
-              search.length < 3 ||
-              usernames.some((u) =>
-                u.toLowerCase().includes(search.toLowerCase())
-              )
-          )
-          .map(([key, usernames]) => (
-            <Card
-              key={key}
-              className="p-4"
-              style={{
-                borderColor:
-                  search.length >= 3 &&
-                  usernames.some((u) =>
-                    u.toLowerCase().includes(search.toLowerCase())
-                  )
-                    ? "#FE6467"
-                    : "inherit",
-              }}
-            >
-              <Collapsible open={true}>
-                <CollapsibleTrigger asChild>
-                  <div className="flex flex-row items-center gap-3">
-                    <Image
-                      src={`https://jbvalues.com/images/itemimages/${key}.webp`}
-                      width={256}
-                      height={256}
-                      alt="item"
-                      className="object-contain h-16 w-fit aspect-square"
-                    />
-                    <div>
-                      <p className="text-sm">{getCategoryFromId(key)}</p>
-                      <p>{getItemDataFromId(key, items)?.name}</p>
-                    </div>
+        {visibleDupes.map(([key, usernames]) => (
+          <Card
+            key={key}
+            className="p-4"
+            style={{
+              borderColor:
+                search.length >= 3 &&
+                usernames.some((u) =>
+                  u.toLowerCase().includes(search.toLowerCase())
+                )
+                  ? "#FE6467"
+                  : "inherit",
+            }}
+          >
+            <Collapsible open={true}>
+              <CollapsibleTrigger asChild>
+                <div className="flex flex-row items-center gap-3">
+                  <Image
+                    src={`https://jbvalues.com/images/itemimages/${key}.webp`}
+                    width={256}
+                    height={256}
+                    alt="item"
+                    className="object-contain h-16 w-fit aspect-square"
+                  />
+                  <div>
+                    <p className="text-sm">{getCategoryFromId(key)}</p>
+                    <p>{getItemDataFromId(key, items)?.name}</p>
                   </div>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <div className="grid grid-cols-3 gap-2 mt-4">
-                    {usernames.map((username) => (
-                      <p key={username} className="text-sm font-semibold">
-                        {highlightText(username, search)}
-                      </p>
-                    ))}
-                  </div>
-                </CollapsibleContent>
-              </Collapsible>
-            </Card>
-          ))}
+                </div>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <div className="grid grid-cols-3 gap-2 mt-4">
+                  {usernames.map((username) => (
+                    <p key={username} className="text-sm font-semibold">
+                      {highlightText(username, search)}
+                    </p>
+                  ))}
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
+          </Card>
+        ))}
+        {search.length >= 3 && visibleDupes.length === 0 && (
+          <p className="text-lg font-bold text-green-400">No dupes found!</p>
+        )}
       </div>
     </div>
   );
