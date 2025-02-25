@@ -18,7 +18,12 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { categories, getCategoryFromId, getItemsAsArray } from "@/lib/utils";
+import {
+  categories,
+  getCategoryFromId,
+  getItemsAsArray,
+  isDuped,
+} from "@/lib/utils";
 import { Collapsible } from "@radix-ui/react-collapsible";
 import {
   ArrowDown,
@@ -36,10 +41,6 @@ import {
 import React, { useEffect, useState } from "react";
 import { useMap } from "usehooks-ts";
 import { Slider } from "@/components/ui/slider";
-
-function isDuped(id: string) {
-  return id.includes("duped");
-}
 
 function Item(props: {
   data: {
@@ -72,9 +73,15 @@ function Item(props: {
           fallbackSrc="/logo.webp"
           alt={`an image of ${props.data.name}`}
         />
+
+        <div className="flex flex-row justify-between">
+          <p>Value</p>
+          <p className="font-semibold">$ {props.data.value.toLocaleString()}</p>
+        </div>
+
         <div className="flex flex-row justify-between">
           <p>Rarity</p>
-          <p className="font-bold">
+          <p className="font-semibold">
             {
               ["Extremely Rare", "Rare", "Uncommon", "Common", "Very Common"][
                 Math.floor(Math.random() * 5)
@@ -85,7 +92,7 @@ function Item(props: {
 
         <div className="flex flex-row justify-between">
           <p>Demand</p>
-          <p className="font-bold">
+          <p className="font-semibold">
             {
               [
                 "Excellent",
@@ -98,11 +105,6 @@ function Item(props: {
               ][Math.floor(Math.random() * 7)]
             }
           </p>
-        </div>
-
-        <div className="flex flex-row justify-between">
-          <p>Value</p>
-          <p className="font-bold">$ {props.data.value.toLocaleString()}</p>
         </div>
       </div>
     </a>

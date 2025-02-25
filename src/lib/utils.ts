@@ -63,6 +63,9 @@ export type Items = {
   demand: string;
 }[];
 
+export function isDuped(id: string) {
+  return id.includes("duped");
+}
 export type Submissions = {
   id: string;
   itemId: string;
