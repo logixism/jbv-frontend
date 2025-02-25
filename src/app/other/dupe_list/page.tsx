@@ -114,7 +114,9 @@ export default function Page() {
                   />
                   <div>
                     <p className="text-sm">{getCategoryFromId(key)}</p>
-                    <p>{getItemDataFromId(key, items)?.name}</p>
+                    <p className="font-semibold">
+                      {getItemDataFromId(key, items)?.name}
+                    </p>
                   </div>
                 </div>
               </CollapsibleTrigger>
