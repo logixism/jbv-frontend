@@ -50,11 +50,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { setTheme } = useTheme();
 
   return (
-    <Sidebar className="max-h-screen" variant="inset" {...props}>
+    <Sidebar className="h-min max-h-screen my-auto overflow-y-scroll pt-0 pb-0" variant="inset" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <Link href="/" className="w-full justify-center items-center m-6">
+            <Link href="/" className="w-full justify-center items-center m-2">
               {/* we can put the long-form logo here, i've asked popman for it & he said after revamp's done */}
               <Image
                 src="/logo.webp"
@@ -102,7 +102,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </ul>
         </div>
       </SidebarContent>
-      <SidebarFooter className="mt-4">
+      <SidebarFooter className="mt-4 mb-4">
         <div className="flex justify-between flex-row w-46 mx-auto">
           <Button
             onClick={() => {
