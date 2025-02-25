@@ -32,7 +32,6 @@ const AccordionTrigger = React.forwardRef<
         className
       )}
       {...props}
-      onClick={(e) => e.currentTarget.scrollIntoView({ behavior: "smooth" })}
     >
       {children}
       <ChevronDown className="h-4 w-4 shrink-0 text-zinc-500 transition-transform duration-200 dark:text-zinc-400" />
