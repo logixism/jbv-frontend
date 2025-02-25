@@ -86,20 +86,21 @@ export default function Page() {
 
   return (
     <div>
-      <Input placeholder="Search" onChange={(e) => setSearch(e.target.value)} />
+      <Input className="border-zinc-800" placeholder="Search" onChange={(e) => setSearch(e.target.value)} />
       <div className="grid gap-4 grid-cols-1 mt-4">
         {visibleDupes.map(([key, usernames]) => (
           <Card
             key={key}
             className="p-4"
             style={{
+              borderWidth: 1,
               borderColor:
                 search.length >= 3 &&
                 usernames.some((u) =>
                   u.toLowerCase().includes(search.toLowerCase())
                 )
                   ? "#FE6467"
-                  : "inherit",
+                  : "bg-zinc-800",
             }}
           >
             <Collapsible open={true}>
