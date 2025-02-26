@@ -97,7 +97,7 @@ export default function Chart({
         type: "spline",
         name: "Value",
         data: filteredData.map((point) => point.value),
-        color: theme === "dark" ? "#FAFAFA" : "#09090B",
+        color: theme === "dark" ? "#09090B" : "#FAFAFA",
         marker: {
           enabled: false,
         },
