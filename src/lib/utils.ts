@@ -136,16 +136,16 @@ export const navigation = {
           url: "/tools/calculator",
         },
         {
+          icon: Repeat,
+          title: "Value Updates",
+          description: "A list of our recent value changes",
+          url: "/values/changes",
+        },
+        {
           icon: Users,
           title: "Team",
           description: "The team behind the JBV Values",
           url: "/values/team",
-        },
-        {
-          icon: Repeat,
-          title: "Recent Changes",
-          description: "A list of our recent value changes",
-          url: "/values/changes",
         },
       ],
     },

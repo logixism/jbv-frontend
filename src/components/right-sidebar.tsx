@@ -25,7 +25,7 @@ export function RightSidebar() {
 
   return (
     <div className="block w-[260px] ml-17">
-        <Link className="inline-block" href="https://discord.com/servers/roblox-jailbreak-trading-jb-values-1024713361985896508" target="_blank" rel="noopener noreferrer">
+        <Link href="https://discord.gg/jbvalues" target="_blank" rel="noopener noreferrer">
             <img
             style={{ borderRadius: "15px" }}
             src="https://discord.com/api/guilds/1024713361985896508/widget.png?style=banner4"
