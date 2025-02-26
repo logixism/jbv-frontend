@@ -233,9 +233,12 @@ function Calculator() {
 
 export default function Page() {
   return (
-    <div className="flex space-x-8 justify-center w-full">
-      <Calculator />
-      <Calculator />
+    <div>
+      <h1 className="font-bold text-3xl text-center -mt-6 mb-6">Jailbreak Trading Calculator</h1>
+      <div className="flex space-x-8 justify-center w-full">
+        <Calculator />
+        <Calculator />
+      </div>
     </div>
   );
 }

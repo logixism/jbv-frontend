@@ -35,9 +35,11 @@ export default async function Page() {
   }
 
   return (
-    <div className="grid gap-6 grid-cols-[repeat(auto-fill,minmax(36rem,1fr))]">
-      {Object.values(lists).map(({ info, stats }) => (
-        <VTCard
+    <div>
+      <h1 className="font-bold text-3xl text-center -mt-6 mb-6">Value List Team</h1>
+      <div className="grid gap-6 grid-cols-[repeat(auto-fill,minmax(36rem,1fr))]">
+        {Object.values(lists).map(({ info, stats }) => (
+          <VTCard
           key={info.customUrl}
           title={info.title}
           icon={info.icon}
@@ -47,8 +49,9 @@ export default async function Page() {
           favorites={stats.favorites}
           views={stats.views}
           updated={stats.updated}
-        />
-      ))}
+          />
+        ))}
+      </div>
     </div>
   );
 }

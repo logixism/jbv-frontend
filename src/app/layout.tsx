@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import BGParticles from "@/components/bg-particles";
 import { useTheme } from "next-themes";
+import { RightSidebar } from "@/components/right-sidebar";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -62,8 +63,11 @@ export default function RootLayout({
               <SidebarProvider>
                 <AppSidebar />
                 {isMobile && <SidebarTrigger className="absolute z-50 m-1" />}
-                <SidebarInset className="min-h-screen min-w-screen md:min-w-0 p-8">
-                  {children}
+                <SidebarInset className="min-h-screen min-w-screen md:min-w-0 p-8 flex flex-row">
+                  <div className="flex-1 min-w-0">
+                    {children}
+                  </div>
+                  <RightSidebar />
                 </SidebarInset>
               </SidebarProvider>
             ) : (

@@ -117,6 +117,8 @@ export default function Page() {
         </AlertDialogContent>
       </AlertDialog>
 
+      <h1 className="font-bold text-3xl text-center -mt-6 mb-6">Jailbreak Private Servers</h1>
+
       <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(24rem,1fr))]">
         {servers.map((server) => (
           <Link

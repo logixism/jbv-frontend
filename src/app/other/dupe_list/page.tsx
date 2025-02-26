@@ -86,6 +86,7 @@ export default function Page() {
 
   return (
     <div>
+      <h1 className="font-bold text-3xl text-center -mt-6 mb-6">Jailbreak Dupe List</h1>
       <Input className="border-zinc-800" placeholder="Search" onChange={(e) => setSearch(e.target.value)} />
       <div className="grid gap-4 grid-cols-1 mt-4">
         {visibleDupes.map(([key, usernames]) => (
