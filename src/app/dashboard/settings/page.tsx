@@ -18,8 +18,12 @@ import {
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Settings2 } from "lucide-react";
+import { useAuth } from "@/lib/auth";
+import { useEffect } from "react";
 
 export default function Page() {
+  const { user, token, settings, isAuthenticated, isLoading, refreshSettings, logout } = useAuth();
+
   return (
     <Card className="w-4/5 mx-auto">
         <CardHeader>

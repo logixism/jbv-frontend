@@ -15,7 +15,7 @@ import {
   Search,
   Settings,
   Sun,
-  Users,
+  CircleUserRound,
 } from "lucide-react";
 
 import {
@@ -45,9 +45,11 @@ import SettingsDialog from "./settings-dialog";
 import { navigation } from "@/lib/utils";
 import { ImageWithFallback } from "./image-with-fallback";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { useAuth } from "@/lib/auth";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { setTheme } = useTheme();
+  const { user, isAuthenticated, login } = useAuth();
 
   return (
     <Sidebar className="h-min max-h-screen my-auto overflow-y-scroll pt-0 pb-0" variant="inset" {...props}>
@@ -105,20 +107,25 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarFooter className="mt-4 mb-4">
         <div className="flex justify-between flex-row w-46 mx-auto">
           <Button
-            onClick={() => {
-              window.location.href = "/dashboard/info";
-            }}
+            onClick={isAuthenticated ? () => window.location.href = "/dashboard/info" : () => login(window.location.href)}
             variant={"outline"}
             className="flex flex-row p-0 flex-1 overflow-hidden"
           >
-            <ImageWithFallback
-              src="/seal.png"
-              fallbackSrc="/fallback.png"
-              className="h-full w-fit object-contain self-start"
-              width={256}
-              height={256}
-            />
-            <div className="flex-1 text-center pr-2">Dashboard</div>
+            {isAuthenticated ? (
+              <>
+                <Avatar className="h-full w-fit aspect-square">
+                  <AvatarImage src={user?.roblox.picture || ""} />
+                </Avatar>
+                <div className="flex-1 text-center pr-4">{user?.roblox.displayName}</div>
+              </>
+            ) : (
+              <>
+                <Avatar className="h-full w-fit aspect-square">
+                  <AvatarImage src={"https://tr.rbxcdn.com/30DAY-AvatarHeadshot-8D86A5CF750F66AEA0C66EC217A6B512-Png/150/150/AvatarHeadshot/Webp/noFilter"} />
+                </Avatar>
+                <div className="flex-1 text-center pr-4">Login</div>
+              </>
+            )}
           </Button>
           <SettingsDialog
             trigger={

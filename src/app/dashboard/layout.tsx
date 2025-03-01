@@ -34,6 +34,8 @@ import { Button } from "@/components/ui/button";
 import { ImageWithFallback } from "@/components/image-with-fallback";
 import SettingsDialog from "@/components/settings-dialog";
 import { Montserrat } from "next/font/google";
+import { login, useAuth } from "@/lib/auth";
+import { useEffect } from "react";
 
 const navigation = [
   {
@@ -56,7 +58,7 @@ const navigation = [
       },
       {
         title: "Log out",
-        href: "/logout",
+        href: "/dashboard/logout",
         icon: LogOut,
       },
     ],
@@ -118,6 +120,14 @@ export default function DashLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const { isLoading, isAuthenticated, login } = useAuth();
+
+  useEffect(() => {
+    if (!isAuthenticated && !isLoading && !window.location.href.includes("/dashboard/logout")) {
+      login(window.location.href);
+    }
+  }, [isAuthenticated, isLoading, login]);
+
   return (
     <div className="text-zinc-950 dark:text-zinc-200 bg-zinc-50 dark:bg-zinc-950">
       <SidebarProvider>

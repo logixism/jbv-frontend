@@ -5,7 +5,7 @@ import { useState } from "react";
 
 export const ImageWithFallback = (props: {
   [x: string]: unknown;
-  src: string;
+  src: string | null;
   fallbackSrc: string;
 }) => {
   const { src, fallbackSrc, ...rest } = props;
@@ -15,7 +15,7 @@ export const ImageWithFallback = (props: {
     <Image
       alt={""}
       {...rest}
-      src={imgSrc}
+      src={imgSrc || fallbackSrc}
       onError={() => {
         setImgSrc(fallbackSrc);
       }}
