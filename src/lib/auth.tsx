@@ -7,6 +7,7 @@ export interface AuthContextType {
     token: string | null;
     settings: UserSettings | null;
     isAuthenticated: boolean;
+    isLoading: boolean;
     login: (referer?: string) => void;
     logout: (referer?: string) => void;
     refreshUser: () => Promise<void>;
@@ -244,6 +245,7 @@ const AuthContext = createContext<AuthContextType>({
   token: null,
   settings: null,
   isAuthenticated: false,
+  isLoading: false,
   login: () => {},
   logout: () => {},
   refreshUser: async () => {},
@@ -255,8 +257,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [token, setToken] = useState<string | null>(retrieveAuthToken());
   const [settings, setSettings] = useState<UserSettings | null>(retrieveSettings());
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const refreshUser = async () => {
+    setIsLoading(true);
     const { success, userData } = await validate();
     
     if (success && userData) {
@@ -268,7 +272,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setIsAuthenticated(false);
       setToken(null);
     }
-    };
+    setIsLoading(false);
+  };
 
   const refreshSettings = async () => {
     if (!isAuthenticated) return;
@@ -304,6 +309,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         token,
         settings,
         isAuthenticated,
+        isLoading,
         login,
         logout: logoutUser,
         refreshUser,
