@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
+
 const apiUrl = "https://api.fishvalues.com";
 
 export interface AuthContextType {
