@@ -137,7 +137,7 @@ export const navigation = {
         },
         {
           icon: Repeat,
-          title: "Value Updates",
+          title: "Updates",
           description: "A list of our recent value changes",
           url: "/values/changes",
         },
@@ -154,7 +154,7 @@ export const navigation = {
       items: [
         {
           icon: Lock,
-          title: "Private Servers",
+          title: "Servers",
           description: "Free JBV-sponsored private servers",
           url: "/other/private_servers",
         },

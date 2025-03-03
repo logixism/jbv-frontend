@@ -131,7 +131,10 @@ export default function DashLayout({
   return (
     <div className="text-zinc-950 dark:text-zinc-200 bg-zinc-50 dark:bg-zinc-950">
       <SidebarProvider>
-        <Sidebar variant="inset">
+        <Sidebar 
+          variant="inset" 
+          className="[&>div]:border-none"
+        >
           <SidebarContent>
             {navigation.map((navGroup, index) => (
               <SidebarGroup key={index}>

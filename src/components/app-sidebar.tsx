@@ -78,12 +78,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <li key={item.title}>
                   <Button
                     variant={"outline"}
-                    className="justify-between"
                     asChild
                   >
-                    <Link className="w-46 rounded-lg pr-2" href={item.url}>
-                      {item.title}
-                      {item.icon && <item.icon className="mr-2" />}
+                    <Link className="w-42 rounded-lg pr-2 flex items-center justify-center gap-2" href={item.url}>
+                      {item.icon && <item.icon />}
+                      <span>{item.title}</span>
                     </Link>
                   </Button>
                 </li>
@@ -96,7 +95,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <ul className="w-full mt-2 flex justify-center items-center gap-2">
             {navigation.socials.map((social) => (
               <li key={social.url}>
-                <Button className="min-w-10" variant={"outline"} size={"icon"} asChild>
+                <Button className="min-w-10" variant={"ghost"} size={"icon"} asChild>
                   <Link href={social.url}>{<social.icon />}</Link>
                 </Button>
               </li>
