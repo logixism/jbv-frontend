@@ -117,7 +117,20 @@ export default function Page() {
         </AlertDialogContent>
       </AlertDialog>
 
-      <h1 className="font-bold text-3xl text-center -mt-6 mb-6">Jailbreak Private Servers</h1>
+      <div className="mb-6 flex items-center flex-col border-zinc-800 border rounded-lg p-4">
+        <h1 className="font-bold text-3xl">Jailbreak Private Servers</h1>
+        <div className="text-zinc-500 mx-auto w-300 flex flex-col items-center mt-4">
+          <p>
+            Here are some free private Roblox Jailbreak VIP servers where you
+            can grind and do contracts without having to worry about cops or
+            exploiters.
+          </p>
+          <p>
+            These servers are sponsored by Jailbreak Values, so we can ensure
+            peace of mind for our players.
+          </p>
+        </div>
+      </div>
 
       <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(24rem,1fr))]">
         {servers.map((server) => (

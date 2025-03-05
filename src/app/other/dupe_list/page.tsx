@@ -22,6 +22,7 @@ import {
   Items,
 } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
 type DupeData = {
   [key: string]: string[];
@@ -86,8 +87,35 @@ export default function Page() {
 
   return (
     <div>
-      <h1 className="font-bold text-3xl text-center -mt-6 mb-6">Jailbreak Dupe List</h1>
-      <Input className="border-zinc-800" placeholder="Search" onChange={(e) => setSearch(e.target.value)} />
+      <div className="mb-6 flex items-center flex-col border-zinc-800 border rounded-lg p-4">
+        {/* here i think we can just keep it barebones, since we're moving away. for the vip server list, i'll work on it once i got time, way too busy these days */}
+        <h1 className="font-bold text-3xl text-center">Jailbreak Dupe List</h1>
+        <div className="flex items-center justify-center">
+          <Image
+            src={"https://jbvalues.com/images/jbvxjbtc4.png"}
+            alt="JB Values x JBTC Logo"
+            width={2048}
+            height={2048}
+            className="h-48 w-auto"
+          />
+        </div>
+        <p className="text-center text-zinc-500">
+          JBValues and{" "}
+          <Link
+            className="underline text-zinc-800 dark:text-zinc-200 hover:opacity-80 transition"
+            href="https://discord.gg/jailbreaktrading"
+          >
+            JBTC
+          </Link>{" "}
+          have partnered to create a dupe list made to help you identify dupes
+          while trading.
+        </p>
+      </div>
+      <Input
+        className="border-zinc-800"
+        placeholder="Search"
+        onChange={(e) => setSearch(e.target.value)}
+      />
       <div className="grid gap-4 grid-cols-1 mt-4">
         {visibleDupes.map(([key, usernames]) => (
           <Card
