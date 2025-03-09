@@ -5,6 +5,7 @@ import {
   AccordionItem,
 } from "@/components/ui/accordion";
 
+
 export default function Page() {
   return (
     <div className="flex flex-col justify-center h-full">
