@@ -119,9 +119,8 @@ export default function Page() {
       />
       <div className="grid gap-4 grid-cols-1 mt-4">
         {visibleDupes.map(([key, usernames]) => (
-          <Collapsible defaultOpen={true}>
+          <Collapsible defaultOpen={true} key={key}>
             <Card
-              key={key}
               className="p-4"
               style={{
                 borderWidth: 1,
