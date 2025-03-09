@@ -23,6 +23,7 @@ import {
 } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { ChevronsUpDown } from "lucide-react";
 
 type DupeData = {
   [key: string]: string[];
@@ -118,38 +119,47 @@ export default function Page() {
       />
       <div className="grid gap-4 grid-cols-1 mt-4">
         {visibleDupes.map(([key, usernames]) => (
-          <Card
-            key={key}
-            className="p-4"
-            style={{
-              borderWidth: 1,
-              borderColor:
-                search.length >= 3 &&
-                usernames.some((u) =>
-                  u.toLowerCase().includes(search.toLowerCase())
-                )
-                  ? "#FE6467"
-                  : "bg-zinc-800",
-            }}
-          >
-            <Collapsible open={true}>
-              <CollapsibleTrigger asChild>
-                <div className="flex flex-row items-center gap-3">
-                  <Image
-                    src={`https://jbvalues.com/images/itemimages/${key}.webp`}
-                    width={256}
-                    height={256}
-                    alt="item"
-                    className="object-contain h-16 w-fit aspect-square"
-                  />
+          <Collapsible defaultOpen={true} key={key}>
+            <Card
+              className="p-4"
+              style={{
+                borderWidth: 1,
+                borderColor:
+                  search.length >= 3 &&
+                  usernames.some((u) =>
+                    u.toLowerCase().includes(search.toLowerCase())
+                  )
+                    ? "#FE6467"
+                    : "bg-zinc-800",
+              }}
+            >
+              <div className="flex flex-row items-center gap-3">
+                <Image
+                  src={`https://jbvalues.com/images/itemimages/${key}.webp`}
+                  width={256}
+                  height={256}
+                  alt="item"
+                  className="object-contain h-16 w-fit aspect-square"
+                />
+                <div className="flex flex-row w-full justify-between items-center">
                   <div>
                     <p className="text-sm">{getCategoryFromId(key)}</p>
                     <p className="font-semibold">
                       {getItemDataFromId(key, items)?.name}
                     </p>
                   </div>
+                  <div>
+                    <CollapsibleTrigger
+                      asChild
+                      className="flex flex-row items-center gap-2"
+                    >
+                      <Button variant="outline" size={"icon"}>
+                        <ChevronsUpDown />
+                      </Button>
+                    </CollapsibleTrigger>
+                  </div>
                 </div>
-              </CollapsibleTrigger>
+              </div>
               <CollapsibleContent>
                 <div className="grid grid-cols-3 gap-2 mt-4">
                   {usernames.map((username) => (
@@ -159,8 +169,8 @@ export default function Page() {
                   ))}
                 </div>
               </CollapsibleContent>
-            </Collapsible>
-          </Card>
+            </Card>
+          </Collapsible>
         ))}
         {search.length >= 3 && visibleDupes.length === 0 && (
           <p className="text-lg font-bold text-green-400">No dupes found!</p>

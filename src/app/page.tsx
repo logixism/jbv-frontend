@@ -18,6 +18,13 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
@@ -31,6 +38,11 @@ import { useEffect, useState } from "react";
 import { Line, LineChart } from "recharts";
 import { useLocalStorage } from "usehooks-ts";
 
+import Autoplay from "embla-carousel-autoplay";
+import { Card } from "@/components/ui/card";
+import { ImageWithFallback } from "@/components/image-with-fallback";
+import { Separator } from "@/components/ui/separator";
+
 type TorpedoData = {
   valuehistory: {
     [date: string]: number;
@@ -38,12 +50,29 @@ type TorpedoData = {
   value: number;
 };
 type ChartData = { date: string; value: number }[];
+type RecentChanges = {
+  time: string;
+  submissionid: string;
+  listName: string;
+  listImage: string;
+  itemName: string;
+  value: number;
+  id: string;
+}[];
 
 async function getTorpedoData(): Promise<TorpedoData> {
   const res = await fetch("https://jbvalues.com/api/itemdata/v0");
   const json = await res.json();
 
   return json;
+}
+
+async function getRecentChanges(): Promise<RecentChanges> {
+  const res = await fetch("https://jbvalues.com/api/recentsubmissions/100");
+  const json = await res.json();
+
+  const lastRecentChanges = json.slice(0, 25);
+  return lastRecentChanges;
 }
 
 const fallbackChartData = [
@@ -69,6 +98,8 @@ export default function Home() {
 
   const [torpedoData, setTorpedoData] = useState<TorpedoData>();
   const [chartData, setChartData] = useState<ChartData>();
+  const [recentChanges, setRecentChanges] = useState<RecentChanges>([]);
+
   useEffect(() => {
     async function fetchData() {
       const data = (await getTorpedoData()) as TorpedoData;
@@ -80,6 +111,8 @@ export default function Home() {
       setTorpedoData(data);
 
       setChartData(generateChartData(data, 12));
+
+      setRecentChanges((await getRecentChanges()) as RecentChanges);
     }
 
     fetchData();
@@ -212,6 +245,163 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col text-center mt-12 w-full">
+        <h2 className="font-semibold text-3xl ">Our reviews</h2>
+        <p>See who endorses us and what they have to say</p>
+
+        <Carousel
+          className="mt-12"
+          opts={{
+            loop: true,
+          }}
+          plugins={[
+            Autoplay({
+              delay: 3000,
+            }),
+          ]}
+        >
+          <CarouselContent>
+            {[
+              {
+                name: "Samantha",
+                image: `https://picsum.photos/${512 + 1}`,
+                testimonial:
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet nulla auctor, vestibulum magna sed, convallis ex.",
+              },
+              {
+                name: "Elijah",
+                image: `https://picsum.photos/${512 + 2}`,
+                testimonial:
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet nulla auctor, vestibulum magna sed, convallis ex.",
+              },
+              {
+                name: "Ava",
+                image: `https://picsum.photos/${512 + 3}`,
+                testimonial:
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet nulla auctor, vestibulum magna sed, convallis ex.",
+              },
+              {
+                name: "Olivia",
+                image: `https://picsum.photos/${512 + 4}`,
+                testimonial:
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet nulla auctor, vestibulum magna sed, convallis ex.",
+              },
+              {
+                name: "Sophia",
+                image: `https://picsum.photos/${512 + 5}`,
+                testimonial:
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet nulla auctor, vestibulum magna sed, convallis ex.",
+              },
+              {
+                name: "Mia",
+                image: `https://picsum.photos/${512 + 6}`,
+                testimonial:
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet nulla auctor, vestibulum magna sed, convallis ex.",
+              },
+              {
+                name: "Isabella",
+                image: `https://picsum.photos/${512 + 7}`,
+                testimonial:
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet nulla auctor, vestibulum magna sed, convallis ex.",
+              },
+              {
+                name: "Charlotte",
+                image: `https://picsum.photos/${512 + 8}`,
+                testimonial:
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet nulla auctor, vestibulum magna sed, convallis ex.",
+              },
+              {
+                name: "Amelia",
+                image: `https://picsum.photos/${512 + 9}`,
+                testimonial:
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet nulla auctor, vestibulum magna sed, convallis ex.",
+              },
+              {
+                name: "Harper",
+                image: `https://picsum.photos/${512 + 10}`,
+                testimonial:
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet nulla auctor, vestibulum magna sed, convallis ex.",
+              },
+            ].map((testimonial) => (
+              <CarouselItem className="basis-1/3" key={testimonial.name}>
+                <Card className="p-4 h-60">
+                  <div className="flex flex-col items-center">
+                    <Image
+                      src={testimonial.image}
+                      width={75}
+                      height={75}
+                      className="rounded-full"
+                      alt={testimonial.name}
+                    />
+                    <p className="font-bold text-2xl my-3">
+                      {testimonial.name}
+                    </p>
+                    <p className="text-zinc-500">{testimonial.testimonial}</p>
+                  </div>
+                </Card>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+      </div>
+
+      <div className="flex flex-col text-center mt-12">
+        <h2 className="font-semibold text-3xl">Recent Value Changes</h2>
+        <p>Our value team&apos;s hard work</p>
+
+        <div className="flex w-full items-center justify-center">
+          <Carousel
+            className="mt-12 w-[95%]"
+            opts={{
+              loop: true,
+            }}
+          >
+            <CarouselContent>
+              {recentChanges.map((change) => (
+                <CarouselItem className="basis-1/3" key={change.submissionid}>
+                  <Card className="p-3">
+                    <div className="flex flex-col h-full w-full">
+                      <ImageWithFallback
+                        src={`https://jbvalues.com/images/itemimages/${change.id}.webp`}
+                        width={256}
+                        height={256}
+                        className="rounded-full h-18 w-full object-contain"
+                        fallbackSrc="/logo.webp"
+                        alt="..."
+                      />
+                      <div className="w-full h-full flex flex-row justify-between items-center mt-2">
+                        <div className="h-full flex flex-row items-center">
+                          <span className="font-medium">{change.itemName}</span>
+                        </div>
+                        <div className="h-full flex flex-row items-center gap-2">
+                          <ImageWithFallback
+                            width={512}
+                            height={512}
+                            src={change.listImage}
+                            fallbackSrc="/logo.webp"
+                            className="w-4 rounded-full"
+                          />
+                          <span className="text-sm">{change.listName}</span>
+                        </div>
+                      </div>
+                      <Separator className="my-2" />
+                      <div className="w-full flex flex-row justify-between">
+                        <span className="font-semibold">
+                          $ {change.value.toLocaleString()}
+                        </span>
+                        <span>{change.time}</span>
+                      </div>
+                    </div>
+                  </Card>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
         </div>
       </div>
 
