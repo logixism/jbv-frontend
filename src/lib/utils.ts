@@ -60,7 +60,6 @@ export type Items = {
   id: string;
   name: string;
   value: number;
-  demand: string;
 }[];
 
 export function isDuped(id: string) {

@@ -36,6 +36,7 @@ export type Item = {
   value: number;
   price?: number;
   maxSpeed?: number;
+  section?: string;
   valuehistory: {
     [date: string]: number;
   };

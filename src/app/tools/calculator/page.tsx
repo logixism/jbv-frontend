@@ -1,9 +1,9 @@
 "use client";
 
 import { Item } from "@/app/values/[slug]/page";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { ChevronsUpDown } from "lucide-react";
 
-import { cn, getItemsAsArray } from "@/lib/utils";
+import { getItemsAsArray, getCategoryFromId } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -18,82 +18,39 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import Image from "next/image";
 import { useEffect, useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
 import { ImageWithFallback } from "@/components/image-with-fallback";
 
 function CalculatorEntry({
   item,
-  selectedItems,
-  setSelectedItems,
+  onRemove,
 }: {
   item: SelectedItem;
-  selectedItems: SelectedItems;
-  setSelectedItems: (selectedItems: SelectedItems) => void;
+  onRemove: (itemId: string) => void;
 }) {
   return (
-    <div
-      key={item.id}
-      className="p-2 flex flex-row border border-zinc-800 h-20 rounded-lg overflow-clip"
+    <div 
+      key={item.id} 
+      className="border-zinc-800 border rounded-lg aspect-square flex flex-col items-center p-2 relative cursor-pointer w-[calc(12.5%-0.75rem)] min-w-20" 
+      onClick={() => onRemove(item.id)}
+      title="Click to remove"
     >
       <ImageWithFallback
-        alt="should be an image here (ryan's fault)"
-        className="max-w-40 h-full object-contain"
-        width={1024}
-        height={1024}
+        alt={item.name}
+        className="w-full h-5/6 object-contain pointer-events-none"
+        width={256}
+        height={256}
         src={`https://jbvalues.com/images/itemimages/${item.id}.webp`}
         fallbackSrc="/logo.webp"
       />
-      <Separator orientation="vertical" className="mx-1" />
-      <div className="flex flex-row items-center ml-2 w-full">
-        <div className="flex flex-col justify-between w-full">
-          <h3 className="text-sm md:text-lg">{item.name}</h3>
-          <p className="font-semibold">
-            $ {(item.value * item.quantity).toLocaleString()}
-          </p>
-        </div>
-        <div className="h-full">
-          <Input
-            type="number"
-            step={1}
-            min={0}
-            max={10000}
-            value={item.quantity || 0}
-            className="w-18 md:w-28 h-full !text-2xl text-center font-medium"
-            onChange={(e) => {
-              if (e.target.value === "") {
-                setSelectedItems(
-                  selectedItems.map((selectedItem) => {
-                    if (selectedItem.id === item.id) {
-                      selectedItem.quantity = 0;
-                    }
-                    return selectedItem;
-                  })
-                );
-                return;
-              }
-
-              if (isNaN(parseInt(e.target.value))) {
-                return;
-              }
-
-              if (parseInt(e.target.value) > 10000) {
-                return;
-              }
-
-              setSelectedItems(
-                selectedItems.map((selectedItem) => {
-                  if (selectedItem.id === item.id) {
-                    selectedItem.quantity = parseInt(e.target.value);
-                  }
-                  return selectedItem;
-                })
-              );
-            }}
-          />
-        </div>
+      <div className="absolute bottom-0 w-full text-center pointer-events-none bg-zinc-900/60">
+        <p className="text-sm truncate">{item.name}</p>
+        <p className="text-sm font-semibold">
+          ${(item.value * item.quantity).toLocaleString()}
+        </p>
+      </div>
+      <div className="absolute top-2 right-2 rounded-full px-2 py-1 pointer-events-none">
+        <span className="text-sm font-bold">{item.quantity}</span>
       </div>
     </div>
   );
@@ -108,19 +65,41 @@ type SelectedItem = {
 
 type SelectedItems = SelectedItem[];
 
-function Calculator() {
+function Calculator({
+  title,
+  selectedItems,
+  setSelectedItems,
+}: {
+  title: string;
+  selectedItems: SelectedItems;
+  setSelectedItems: (selectedItems: SelectedItems) => void;
+}) {
   const [open, setOpen] = useState(false);
-  const [selectedItems, setSelectedItems] = useState<SelectedItems>([]);
   const [items, setItems] = useState([{} as Partial<Item>]);
 
   useEffect(() => {
     getItemsAsArray(false).then((items) => {
-      setItems(items);
+      setItems([...items].sort((a, b) => getCategoryFromId(b.id).localeCompare(getCategoryFromId(a.id))));
     });
   }, []);
 
+  const removeItem = (itemId: string) => {
+    setSelectedItems(
+      selectedItems.map((selectedItem) => {
+        if (selectedItem.id === itemId) {
+          return {
+            ...selectedItem,
+            quantity: 0,
+          };
+        }
+        return selectedItem;
+      })
+    );
+  };
+
   return (
     <div className="p-4 md:outline outline-zinc-800 rounded-lg w-full">
+      <h2 className="font-bold text-xl mb-4">{title}</h2>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
@@ -143,7 +122,7 @@ function Calculator() {
                   <CommandItem
                     key={item.id}
                     value={item.name}
-                    onSelect={(currentValue) => {
+                    onSelect={() => {
                       if (!item.id) return;
 
                       if (
@@ -196,20 +175,21 @@ function Calculator() {
           </Command>
         </PopoverContent>
       </Popover>
-      <div className="space-y-4 mt-4 max-h-160 overflow-y-scroll">
+      
+      <div className="flex flex-row flex-wrap gap-3 mt-4">
         {selectedItems
           .filter((item) => item.quantity > 0)
           .map((item) => (
             <CalculatorEntry
               key={item.id}
               item={item}
-              selectedItems={selectedItems}
-              setSelectedItems={setSelectedItems}
+              onRemove={removeItem}
             />
           ))}
       </div>
-      <div className="flex flex-row justify-between ml-1 mt-4">
-        <p className="font-semibold">
+      
+      <div className="flex flex-row justify-between ml-1 pt-4">
+        <p className="font-semibold pt-3">
           Total: $
           {selectedItems
             .reduce((acc, item) => acc + item.value * item.quantity, 0)
@@ -232,12 +212,37 @@ function Calculator() {
 }
 
 export default function Page() {
+  const [yourItems, setYourItems] = useState<SelectedItems>([]);
+  const [theirItems, setTheirItems] = useState<SelectedItems>([]);
+  
+  const total1 = yourItems.reduce((acc, item) => acc + item.value * item.quantity, 0);
+  const total2 = theirItems.reduce((acc, item) => acc + item.value * item.quantity, 0);
+  
+  const valueDifference = total2 - total1;
+  
   return (
     <div>
       <h1 className="font-bold text-3xl text-center -mt-6 mb-6">Jailbreak Trading Calculator</h1>
-      <div className="flex space-x-8 justify-center w-full">
-        <Calculator />
-        <Calculator />
+      <div className="flex flex-col space-y-6 justify-center w-full">
+        <Calculator 
+          title="Your Offer" 
+          selectedItems={yourItems} 
+          setSelectedItems={setYourItems} 
+        />
+        <Calculator 
+          title="Their Offer" 
+          selectedItems={theirItems} 
+          setSelectedItems={setTheirItems} 
+        />
+      </div>
+      <div className="mt-8 text-center">
+        <div className="inline-block dark:bg-black border border-zinc-800 px-4 py-2 rounded-lg">
+          <p className="text-sm">
+            Value Difference: <span className={`font-bold ${valueDifference > 0 ? 'text-green-500' : valueDifference < 0 ? 'text-red-500' : 'text-white'}`}>
+              {valueDifference > 0 ? '+' : ''}{valueDifference.toLocaleString()}
+            </span>
+          </p>
+        </div>
       </div>
     </div>
   );
