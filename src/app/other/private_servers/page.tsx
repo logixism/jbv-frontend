@@ -71,7 +71,7 @@ export default function Page() {
   const [hasReadVIPRules, setHasReadVIPRules, removeHasReadVIPRules] =
     useLocalStorage<null | number>("hasReadVIPRules", null);
 
-  const [secondsRemaining, setSecondsRemaining] = useState(20);
+  const [secondsRemaining, setSecondsRemaining] = useState(10);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -154,8 +154,8 @@ export default function Page() {
               )}
               {server.type}
             </p>
-            <h4 className="font-bold">{server.name}</h4>
-            <div className="flex flex-row justify-between mt-2">
+            <h4 className="font-semibold text-lg">{server.name}</h4>
+            <div className="flex flex-row justify-between mt-1">
               <p className="font-medium">Owner</p>
               <p className="font-semibold">{server.owner}</p>
             </div>
