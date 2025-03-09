@@ -350,7 +350,7 @@ export default function Home() {
 
       <div className="flex flex-col text-center mt-12">
         <h2 className="font-semibold text-3xl">Recent Value Changes</h2>
-        <p>Our value team's hard work</p>
+        <p>Our value team&apos;s hard work</p>
 
         <div className="flex w-full items-center justify-center">
           <Carousel
